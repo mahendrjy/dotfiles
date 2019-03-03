@@ -1,0 +1,21 @@
+{
+  "name": "gulpfile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^9.4.9",
+    "browser-sync": "^2.26.3",
+    "gulp": "^4.0.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "postcss-calc": "^7.0.1",
+    "postcss-css-variables": "^0.12.0"
+  }
+}

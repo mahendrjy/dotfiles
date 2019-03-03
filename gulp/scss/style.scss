@@ -1,0 +1,64 @@
+@import 'global';
+
+body {
+  background-image: linear-gradient(to left, #b224ef 0%, #7579ff 100%);
+}
+
+.profile {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25vh;
+  animation: Animation 2s 1 0s linear;
+}
+
+.img {
+  width: 9.375em;
+  border-radius: 100%;
+  box-shadow: 0 0 20px white;
+}
+
+.profile h1 {
+  font-size: 1.2em;
+  font-family: sans-serif;
+  margin-top: 40px;
+  color: white;
+  text-shadow: 0 0 20px white;
+}
+
+@keyframes Animation {
+  0% {
+    transform: translateY(-160%);
+  }
+  25% {
+    transform: translateY(-120%);
+  }
+  50% {
+    transform: translateY(-80%);
+  }
+  75% {
+    transform: translateY(-40%);
+  }
+  100% {
+    transform: rotate(xx) translateY(0);
+  }
+}
+
+@media (min-width: 37.5rem) {
+  .img {
+    width: 18.75em;
+  }
+  .profile h1 {
+    font-size: 3em;
+  }
+}
+
+@media (min-width: 64rem) {
+  .img {
+    width: 14em;
+  }
+  .profile h1 {
+    font-size: 2.25em;
+  }
+}
