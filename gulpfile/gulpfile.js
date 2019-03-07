@@ -12,12 +12,9 @@ const webpackconfig = require('./webpack.config.js');
 const webpackstream = require('webpack-stream');
 const browsersync = require('browser-sync').create();
 const del = require('del');
-const fs = require('fs');
-const glob = require('glob');
 const imagemin = require('gulp-imagemin');
-const path = require('path');
-const sharp = require('sharp');
 const cache = require('gulp-cache');
+const gulpHtmlmin = require('gulp-htmlmin');
 
 // BrowserSync
 // Live reload with BrowserSync
@@ -36,7 +33,10 @@ function init(done) {
 // ------------ Development Tasks -------------
 // Copies html to dist
 function html() {
-  return gulp.src('./src/**/*.html').pipe(gulp.dest('./dist/'));
+  return gulp
+    .src('./src/**/*.html')
+    .pipe(gulpHtmlmin({ collapseWhitespace: true }))
+    .pipe(gulp.dest('./dist/'));
 }
 
 // Compile Sass into CSS
@@ -123,60 +123,6 @@ function fontsCopy() {
     .pipe(gulp.dest('./dist/assets/fonts/'));
 }
 
-// specify transforms
-const transforms = [];
-/* example
-const transforms = [
-  {
-    src: './src/assets/img/projects/',
-    dist: './dist/img/projects/_800x600/',
-    options: {
-      width: 800,
-      height: 600,
-      fit: 'cover',
-    },
-  },
-];
-*/
-
-// Check that directory exists (recursive)
-function dirExists(path) {
-  var dir = sanitizeDir(path);
-  if (fs.existsSync(dir)) {
-    return true;
-  }
-  return false;
-}
-
-// Make sure paths ends with a slash
-function sanitizeDir(path) {
-  let sanitizedPath = path.slice(-1) !== '/' ? `${path}/` : path;
-  return sanitizedPath;
-}
-
-// resize images
-function imgResize(done) {
-  transforms.forEach(function(transform) {
-    let distDir = sanitizeDir(transform.dist);
-    if (!dirExists(distDir)) {
-      fs.mkdirSync(distDir, { recursive: true });
-    }
-
-    let files = glob.sync(sanitizeDir(transform.src) + '*');
-
-    files.forEach(function(file) {
-      let filename = path.basename(file);
-      sharp(file)
-        .resize(transform.options)
-        .toFile(`${distDir}/${filename}`)
-        .catch(err => {
-          console.log(err);
-        });
-    });
-  });
-  done();
-}
-
 // Watch files for changes while gulp is running
 function watchFiles() {
   gulp.watch('./src/scss/**/*', cssBuild);
@@ -195,7 +141,7 @@ function clean() {
 
 // define complex tasks
 const scripts = gulp.series(jsLint, jsBuild);
-const images = gulp.series(imgOptimise, imgResize);
+const images = gulp.series(imgOptimise);
 const watch = gulp.parallel(watchFiles, init);
 const build = gulp.series(
   clean,
