@@ -109,12 +109,6 @@ function imgOptimise() {
     .pipe(gulp.dest('./dist/assets/img/'));
 }
 
-// Copies video assets to dist
-function media() {
-  return gulp
-    .src('src/assets/videois/**/*')
-    .pipe(gulp.dest('dist/assets/videos/'));
-}
 
 // Copy fonts
 function fontsCopy() {
