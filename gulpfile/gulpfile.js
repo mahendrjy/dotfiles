@@ -1,34 +1,205 @@
 // Load plugins
 const gulp = require('gulp');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
+const postcss = require('gulp-postcss');
+const rename = require('gulp-rename');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const eslint = require('gulp-eslint');
+const webpack = require('webpack');
+const webpackconfig = require('./webpack.config.js');
+const webpackstream = require('webpack-stream');
+const browsersync = require('browser-sync').create();
+const del = require('del');
+const fs = require('fs');
+const glob = require('glob');
+const imagemin = require('gulp-imagemin');
+const path = require('path');
+const sharp = require('sharp');
+const cache = require('gulp-cache');
 
-// import tasks
-const img = require('./gulp/images.js');
-const js = require('./gulp/scripts.js');
-const server = require('./gulp/browsersync.js');
-const css = require('./gulp/styles.js');
-const fonts = require('./gulp/fonts.js');
-const clean = require('./gulp/clean.js');
+// BrowserSync
+// Live reload with BrowserSync
+function init(done) {
+  browsersync.init({
+    server: {
+      baseDir: './dist/',
+    },
+    files: ['./dist/css/style.min.css', './dist/js/**/*', './dist/**/*.html'],
+    port: 3000,
+    open: false,
+  });
+  done();
+}
 
+// ------------ Development Tasks -------------
+// Copies html to dist
 function html() {
   return gulp.src('./src/**/*.html').pipe(gulp.dest('./dist/'));
 }
 
-// Watch files
+// Compile Sass into CSS
+function cssBuild() {
+  return gulp
+    .src('./src/scss/**/*.scss')
+    .pipe(sourcemaps.init())
+    .pipe(
+      sass({
+        outputStyle: 'expanded',
+        sourceComments: 'map',
+        sourceMap: 'sass',
+        outputStyle: 'nested',
+      }).on('error', sass.logError)
+    )
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./dist/css/'))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(
+      postcss([
+        autoprefixer(),
+        cssnano(), // Use cssnano to minify CSS
+      ])
+    )
+    .pipe(gulp.dest('./dist/css/'));
+}
+
+// Lint scripts
+function jsLint() {
+  return gulp
+    .src(['./src/js/main.js'])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+}
+
+// Transpile, concatenate and minify scripts
+function jsBuild() {
+  return (
+    gulp
+      .src(['./src/js/**/*'])
+      .pipe(webpackstream(webpackconfig, webpack))
+      // folder only, filename is specified in webpack
+      .pipe(gulp.dest('./dist/js/'))
+  );
+}
+
+// ------------ Optimization Tasks -------------
+// Copies image files to dist
+function imgOptimise() {
+  return gulp
+    .src('./src/assets/img/**/*.+(png|jpg|jpeg|gif|svg)')
+    .pipe(
+      cache(
+        imagemin([
+          imagemin.gifsicle({ interlaced: true }),
+          imagemin.jpegtran({ progressive: true }),
+          imagemin.optipng({ optimizationLevel: 5 }),
+          imagemin.svgo({
+            plugins: [
+              {
+                removeViewBox: false,
+                collapseGroups: true,
+              },
+            ],
+          }),
+        ])
+      )
+    ) // Caching images that ran through imagemin
+    .pipe(gulp.dest('./dist/assets/img/'));
+}
+
+// Copies video assets to dist
+function media() {
+  return gulp
+    .src('src/assets/videois/**/*')
+    .pipe(gulp.dest('dist/assets/videos/'));
+}
+
+// Copy fonts
+function fontsCopy() {
+  return gulp
+    .src('./src/assets/fonts/**/*')
+    .pipe(gulp.dest('./dist/assets/fonts/'));
+}
+
+// specify transforms
+const transforms = [];
+/* example
+const transforms = [
+  {
+    src: './src/assets/img/projects/',
+    dist: './dist/img/projects/_800x600/',
+    options: {
+      width: 800,
+      height: 600,
+      fit: 'cover',
+    },
+  },
+];
+*/
+
+// Check that directory exists (recursive)
+function dirExists(path) {
+  var dir = sanitizeDir(path);
+  if (fs.existsSync(dir)) {
+    return true;
+  }
+  return false;
+}
+
+// Make sure paths ends with a slash
+function sanitizeDir(path) {
+  let sanitizedPath = path.slice(-1) !== '/' ? `${path}/` : path;
+  return sanitizedPath;
+}
+
+// resize images
+function imgResize(done) {
+  transforms.forEach(function(transform) {
+    let distDir = sanitizeDir(transform.dist);
+    if (!dirExists(distDir)) {
+      fs.mkdirSync(distDir, { recursive: true });
+    }
+
+    let files = glob.sync(sanitizeDir(transform.src) + '*');
+
+    files.forEach(function(file) {
+      let filename = path.basename(file);
+      sharp(file)
+        .resize(transform.options)
+        .toFile(`${distDir}/${filename}`)
+        .catch(err => {
+          console.log(err);
+        });
+    });
+  });
+  done();
+}
+
+// Watch files for changes while gulp is running
 function watchFiles() {
-  gulp.watch('./src/scss/**/*', css.build);
+  gulp.watch('./src/scss/**/*', cssBuild);
   gulp.watch('./src/js/**/*', scripts);
   gulp.watch('./src/**/*', html);
-  gulp.watch('./src/assets/img/**/*', gulp.parallel(img.copy, img.resize));
-  gulp.watch('./src/assets/fonts/**/*', fonts.copy);
+  gulp.watch('./src/assets/img/**/*', imgOptimise);
+  gulp.watch('./src/assets/videos/**/*', media);
+  gulp.watch('./src/assets/fonts/**/*', fontsCopy);
+}
+
+// Cleaning/deleting files no longer being used in dist folder
+function clean() {
+  console.log('Removing old files from dist');
+  return del(['./dist/']);
 }
 
 // define complex tasks
-const scripts = gulp.series(js.lint, js.build);
-const images = gulp.series(img.optimise, gulp.parallel(img.copy, img.resize));
-const watch = gulp.parallel(watchFiles, server.init);
+const scripts = gulp.series(jsLint, jsBuild);
+const images = gulp.series(imgOptimise, imgResize);
+const watch = gulp.parallel(watchFiles, init);
 const build = gulp.series(
-  clean.all,
-  gulp.parallel(fonts.copy, css.build, images, scripts, html)
+  clean,
+  gulp.parallel(fontsCopy, cssBuild, images, scripts, html, media)
 );
 
 // expose tasks to CLI

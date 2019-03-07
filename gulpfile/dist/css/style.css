@@ -1,62 +1,54 @@
+/* line 1, src/scss/style.scss */
 body {
-  background: linear-gradient(to left, #b224ef 0%, #7579ff 100%);
-}
+  background: linear-gradient(to left, #b224ef 0%, #7579ff 100% c); }
 
+/* line 5, src/scss/style.scss */
 .profile {
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
   margin-top: 25vh;
-  animation: Animation 2s 1 0s linear;
-}
+  animation: Animation 2s 1 0s linear; }
 
+/* line 14, src/scss/style.scss */
 .img {
   width: 9.375em;
   border-radius: 100%;
-  box-shadow: 0 0 20px white;
-}
+  box-shadow: 0 0 20px white; }
 
+/* line 20, src/scss/style.scss */
 .profile h1 {
   font-size: 1.2em;
   font-family: sans-serif;
   margin-top: 40px;
   color: white;
-  text-shadow: 0 0 20px white;
-}
+  text-shadow: 0 0 20px white; }
 
 @keyframes Animation {
   0% {
-    transform: translateY(-160%);
-  }
+    transform: translateY(-160%); }
   25% {
-    transform: translateY(-120%);
-  }
+    transform: translateY(-120%); }
   50% {
-    transform: translateY(-80%);
-  }
+    transform: translateY(-80%); }
   75% {
-    transform: translateY(-40%);
-  }
+    transform: translateY(-40%); }
   100% {
-    transform: rotate(xx) translateY(0);
-  }
-}
+    transform: rotate(xx) translateY(0); } }
 
 @media (min-width: 37.5rem) {
+  /* line 47, src/scss/style.scss */
   .img {
-    width: 18.75em;
-  }
+    width: 18.75em; }
+  /* line 50, src/scss/style.scss */
   .profile h1 {
-    font-size: 3em;
-  }
-}
+    font-size: 3em; } }
 
 @media (min-width: 64rem) {
+  /* line 56, src/scss/style.scss */
   .img {
-    width: 14em;
-  }
+    width: 14em; }
+  /* line 59, src/scss/style.scss */
   .profile h1 {
-    font-size: 2.25em;
-  }
-}
+    font-size: 2.25em; } }

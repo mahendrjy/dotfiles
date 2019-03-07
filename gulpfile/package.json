@@ -9,7 +9,8 @@
     "build": "gulp build"
   },
   "browserslist": [
-    "last 2 versions"
+    "last 2 versions",
+    ">1%"
   ],
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -21,12 +22,13 @@
     "del": "^4.0.0",
     "glob": "^7.1.3",
     "gulp": "^4.0.0",
+    "gulp-cache": "^1.1.1",
     "gulp-eslint": "^5.0.0",
     "gulp-imagemin": "^5.0.3",
-    "gulp-newer": "^1.4.0",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
     "sharp": "^0.21.3",
     "webpack": "^4.29.6",
     "webpack-stream": "^5.2.1"
