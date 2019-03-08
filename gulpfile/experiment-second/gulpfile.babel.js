@@ -11,7 +11,7 @@ import {
   sass as sassConfig,
   scripts as jsConfig,
   images as imagesConfig,
-  templates as templatesConfig,
+  templates as templatesConfig
 } from './tasks/config';
 
 /**
@@ -21,10 +21,7 @@ function watchFiles() {
   // Sass
   watch(sassConfig.src, series(styles, reload));
   // Templates
-  watch(
-    [templatesConfig.edges, templatesConfig.data, templatesConfig.helper],
-    series(templates, reload)
-  );
+  watch(templatesConfig.src, series(templates, reload));
   // JavaScript
   watch(jsConfig.src, series(scripts, reload));
   // Images
