@@ -1039,16 +1039,6 @@
   },
   {
     "key": "ctrl+j",
-    "command": "breadcrumbs.selectFocused",
-    "when": "breadcrumbsActive && breadcrumbsVisible"
-  },
-  {
-    "key": "down",
-    "command": "-breadcrumbs.selectFocused",
-    "when": "breadcrumbsActive && breadcrumbsVisible"
-  },
-  {
-    "key": "ctrl+j",
     "command": "cursorDown",
     "when": "textInputFocus"
   },
@@ -1058,99 +1048,19 @@
     "when": "textInputFocus"
   },
   {
-    "key": "ctrl+j",
-    "command": "extension.vim_down",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-  {
-    "key": "down",
-    "command": "-extension.vim_down",
-    "when": "editorTextFocus && vim.active && !inDebugRepl && !suggestWidgetMultipleSuggestions && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "keybindings.editor.focusKeybindings",
-    "when": "inKeybindings && inKeybindingsSearch"
-  },
-  {
-    "key": "down",
-    "command": "-keybindings.editor.focusKeybindings",
-    "when": "inKeybindings && inKeybindingsSearch"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "list.focusDown",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "down",
-    "command": "-list.focusDown",
-    "when": "listFocus && !inputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "notifications.focusNextToast",
-    "when": "notificationFocus && notificationToastsVisible"
-  },
-  {
-    "key": "down",
-    "command": "-notifications.focusNextToast",
-    "when": "notificationFocus && notificationToastsVisible"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "settings.action.focusSettingsFile",
-    "when": "inSettingsSearch && !suggestWidgetVisible"
-  },
-  {
-    "key": "down",
-    "command": "-settings.action.focusSettingsFile",
-    "when": "inSettingsSearch && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "settings.action.focusSettingsFromSearch",
-    "when": "inSettingsSearch && !suggestWidgetVisible"
-  },
-  {
-    "key": "down",
-    "command": "-settings.action.focusSettingsFromSearch",
-    "when": "inSettingsSearch && !suggestWidgetVisible"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "workbench.action.interactivePlayground.arrowDown",
-    "when": "interactivePlaygroundFocus && !editorTextFocus"
-  },
-  {
-    "key": "down",
-    "command": "-workbench.action.interactivePlayground.arrowDown",
-    "when": "interactivePlaygroundFocus && !editorTextFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "selectNextSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
-  },
-  {
-    "key": "down",
-    "command": "-selectNextSuggestion",
-    "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus"
-  },
-  {
-    "key": "ctrl+j",
-    "command": "workbench.action.quickOpenSelectNext"
-  },
-  {
-    "key": "ctrl+k",
-    "command": "workbench.action.quickOpenSelectPrevious"
-  },
-  {
-    "key": "ctrl+k",
+    "key": "ctrl+shift+k",
     "command": "workbench.action.quickOpenNavigatePrevious"
   },
   {
-    "key": "ctrl+j",
+    "key": "ctrl+shift+j",
     "command": "workbench.action.quickOpenNavigateNext"
+  },
+  {
+    "key": "ctrl+shift+j",
+    "command": "workbench.action.quickOpenSelectNext"
+  },
+  {
+    "key": "ctrl+shift+k",
+    "command": "workbench.action.quickOpenSelectPrevious"
   }
 ]
