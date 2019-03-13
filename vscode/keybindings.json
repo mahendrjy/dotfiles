@@ -39,10 +39,6 @@
     "when": "searchViewletVisible"
   },
   {
-    "key": "ctrl+oem_3",
-    "command": "workbench.action.quickOpenTerm"
-  },
-  {
     "key": "ctrl+k",
     "command": "cursorUp",
     "when": "textInputFocus"
@@ -151,10 +147,6 @@
     "key": "ctrl+l",
     "command": "notification.expand",
     "when": "notificationFocus"
-  },
-  {
-    "key": "ctrl+oem_3",
-    "command": "workbench.action.togglePanel"
   },
   {
     "key": "ctrl+oem_1 ctrl+c",
@@ -519,5 +511,17 @@
     "key": "ctrl+shift+h",
     "command": "cursorLeftSelect",
     "when": "textInputFocus"
+  },
+  {
+    "key": "ctrl+oem_7",
+    "command": "workbench.action.quickOpenTerm"
+  },
+  {
+    "key": "ctrl+oem_3",
+    "command": "workbench.action.togglePanel"
+  },
+  {
+    "key": "ctrl+shift+oem_7",
+    "command": "workbench.action.terminal.toggleTerminal"
   }
 ]

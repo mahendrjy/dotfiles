@@ -1,4 +1,4 @@
-#Vscode Settings
+# Vscode Settings
 
 - Vim extension to speed up my workflow.
 - To speed up my insert mode workflow, I customize all arrow keys `leftArrow, downArrow, upArrow, rightArrow` to `ctrl+(h,j,k,l)` respectively, because of conflict, I customize all `ctrl+k` to `ctrl+;` and All `ctrl+j` to `ctrl+`
@@ -12,7 +12,11 @@
 - cursorDownSelect - `ctrl+shift+j`
 - cursorRightSelect - `ctrl+shift+h`
 - cursorLeftSelect - `ctrl+shift+l`
-- Move Line Down - 'alt+j'
-- Move Line Up - 'alt+k'
-- Copy Line Down - 'shift+alt+j'
-- Copy Line Up = 'shift+alt+k'
+- Move Line Down - `alt+j`
+- Move Line Up - `alt+k`
+- Copy Line Down - `shift+alt+j`
+- Copy Line Up - `shift+alt+k`
+- Switch Active Terminal - `ctrl+'`
+- Toggle Integrated Terminal - `ctrl+shift+'`
+- Toggle Panel - `ctrl+` `
+- Create New Integrated Terminal - `ctrl+shift+` ` (For create new terminal, Most of the time, I use the Switch Active Terminal + Rename Terminal)
