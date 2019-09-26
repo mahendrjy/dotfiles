@@ -1,0 +1,17 @@
+! Material Palenight
+#define color_base03   #292d3e
+#define color_base02   #444267
+#define color_base01   #32374d
+#define color_base00   #676e95
+#define color_base0    #8796b0
+#define color_base1    #959dcb
+#define color_base2    #959dcb
+#define color_base3    #ffffff
+#define color_yellow   #ffcb6b
+#define color_orange   #f78c6c
+#define color_red      #ff5370
+#define color_magenta  #82aaff
+#define color_violet   #c792ea
+#define color_blue     #99bcff
+#define color_cyan     #89ddff
+#define color_green    #c3e88d
