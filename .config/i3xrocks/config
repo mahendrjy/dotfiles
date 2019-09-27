@@ -1,0 +1,81 @@
+# i3xrocks config file
+# # The man page for i3blocks is hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=/usr/share/i3xrocks/$BLOCK_NAME
+separator_block_width=40
+markup=pango
+color=xresource:i3xrocks.value.color
+label_color=xresource:i3xrocks.label.color
+
+# Network manager VPN
+#
+# Displays currently connected VPN using the nm-cli tool.
+#[nm-vpn]
+#interval=5
+
+# Wifi
+#
+# Displays the wifi network's name
+# If the auto-discovered wifi device is incorrect,
+# override the "instance" value with the desired device
+[wifi2]
+#instance=wlp3s0 Replace with your wifi device if you need
+interval=5
+
+# Keyboard layout
+#
+# Displays current keyboard layout.
+#[keyboard_layout]
+#interval=persist
+
+# CPU usage
+#
+# The script may be called with -w and -c switches to specify thresholds,
+# see the script for details.
+[cpu_usage]
+interval=5
+min_width=100%
+#separator=false
+
+# Battery indicator
+#
+# Displays total percentage charge left across all batteries.
+#
+# To display colored text (or icon, if "icon_only" is enabled)
+# depending on charge remaining, uncomment "percent_color".
+#
+# To display est. time remaining, uncomment "display_time_left".
+#
+# To display the battery icon only, uncomment "icon_only".
+[battery2]
+interval=30
+#display_time_left=true
+percent_color=true
+#icon_only=true
+
+# Date Time
+#
+[time]
+interval=60
+

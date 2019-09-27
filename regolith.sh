@@ -62,6 +62,8 @@ PKGS=(
     tree
     nethogs
     variety
+    exa
+    kitty
 )
 
 # Keep-alive: update existing `sudo` time stamp until `install` has finished

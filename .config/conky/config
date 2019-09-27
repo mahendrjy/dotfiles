@@ -1,0 +1,67 @@
+ conky.config = {
+    background = true,
+    use_xft = true,
+    font = 'Source Code Pro:size=11',
+    xftalpha = 1,
+    update_interval = 999999,
+    total_run_times = 0,
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_transparent = false,
+    own_window_type = 'normal',
+    own_window_colour = '111111',
+    own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+    double_buffer = true,
+    maximum_width = 640,
+    draw_shades = false,
+    draw_outline = false,
+    draw_borders = false,
+    draw_graph_borders = false,
+    default_color = 'FFFFFF',
+    default_shade_color = '000000',
+    default_outline_color = '000000',
+    alignment = 'top_right',
+    gap_x = 20,
+    gap_y = 20,
+    no_buffers = true,
+    uppercase = false,
+    cpu_avg_samples = 2,
+    override_utf8_locale = true,
+    border_inner_margin = 12
+ }
+ conky.text = [[
+Launch Terminal$alignr Super+Enter
+Launch Browser$alignr Super+Shift+Enter
+Launch Application$alignr Super+Space
+Choose Window$alignr Super+Ctrl+Space
+
+Go to Workspace 1$alignr Super+1
+Go to Workspace n$alignr Super+n
+Next Workspace$alignr Super+Tab
+Last Workspace$alignr Super+Shift+Tab
+
+Toggle Layout Mode$alignr Super+Backspace
+
+Resize Window Mode$alignr Super+r
+Exit Resize Window Mode$alignr Escape
+Focused Window Fullscreen Toggle$alignr Super+f
+Floating Window Mode Toggle$alignr Super+Shift+f
+Kill Active Window$alignr Super+Shift+q
+
+Move Window to WS 1$alignr Super+Shift+1
+Move Window to WS n$alignr Super+Shift+n
+
+Change Window Focus$alignr Super+[↑]/[↓]/[←]/[→]
+$alignr Super+[k]/[j]/[h]/[l]
+Move Window$alignr Super+Shift+[↑]/[↓]/[←]/[→]
+$alignr Super+Shift+[k]/[j]/[h]/[l]
+
+Resize Window Gaps$alignr Super+[+]/[-]
+
+Control Center$alignr Super+c
+
+Lock Screen$alignr Super+Escape
+Sleep$alignr Super+Shift+s
+Logout$alignr Super+Shift+e
+
+Toggle This Window$alignr Super+Shift+?]]

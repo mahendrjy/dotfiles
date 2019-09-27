@@ -177,15 +177,4 @@ bindkey '^S' history-incremental-search-forward  # Perform forward search in com
 bindkey '^P' history-search-backward             # Go back/search in history (autocomplete)
 bindkey '^N' history-search-forward              # Go forward/search in history (autocomplete)
 
-# Make apps transparent and vice versa
-# Firefox
-alias tf="mv ~/.devilspie/firefox_transparent.ds.hide ~/.devilspie/firefox_transparent.ds"
-alias utf="mv ~/.devilspie/firefox_transparent.ds ~/.devilspie/firefox_transparent.ds.hide"
-# Vscode
-alias tc="mv ~/.devilspie/vscode_transparent.ds.hide ~/.devilspie/vscode_transparent.ds"
-alias utc="mv ~/.devilspie/vscode_transparent.ds ~/.devilspie/vscode_transparent.ds.hide"
-# Terminal - Kitty
-alias tt="mv ~/.devilspie/kitty_transparent.ds.hide ~/.devilspie/kitty_transparent.ds"
-alias utt="mv ~/.devilspie/kitty_transparent.ds ~/.devilspie/kitty_transparent.ds.hide"
-
 alias npm="sudo npm"
