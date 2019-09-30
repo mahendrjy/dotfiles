@@ -16,6 +16,12 @@ set $compton_config /etc/regolith/compton/config
 # path to terminal. Override this to specify a custom terminal.
 set $terminal_path /usr/bin/kitty
 
+# path to browser. Override this to specify a custom browser.
+set $browser_path /usr/bin/chromium-browser
+
+# path to editor. Override this to specify a custom editor.
+set $editor_path /snap/bin/code
+
 # Color values are defined in ~/.Xresources-regolith
 # These are the labels which define each i3 workspace.
 set_from_resource $ws1  i3-wm.workspace.01.name "1"
@@ -47,7 +53,10 @@ hide_edge_borders smart
 bindsym $mod+Return exec $terminal_path
 
 # start a web browser
-bindsym $mod+Shift+Return exec /usr/bin/sensible-browser
+bindsym $mod+Shift+Return exec $browser_path
+
+# start a code editor
+bindsym $mod+Ctrl+Shift+Return exec $editor_path
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -317,7 +326,7 @@ set $color_green    #c3e88d
 
 # Window Border color
 # class                 border                             background                         text                               indicator                          child_border
-client.focused          $focused.color.border              $color_base00          $focused.color.text                $focused.color.indicator           $focused.color.child_border
+client.focused          $focused.color.border              $color_base1          $focused.color.text                $focused.color.indicator           $focused.color.child_border
 client.focused_inactive $focused_inactive.color.border     $focused_inactive.color.background $focused_inactive.color.text       $focused_inactive.color.indicator  $focused_inactive.color.child_border
 client.unfocused        $unfocused.color.border            $unfocused.color.background        $unfocused.color.text              $unfocused.color.indicator         $unfocused.color.child_border
 client.urgent           $urgent.color.border               $urgent.color.background           $urgent.color.text                 $urgent.color.indicator            $urgent.color.child_border
@@ -387,6 +396,4 @@ exec --no-startup-id /usr/bin/unclutter -b
 # Refresh wallpaper on screen resolution change
 # exec --no-startup-id /usr/bin/xeventbind resolution /usr/bin/wallpaper-refresh
 
-exec --no-startup-id devilspie
 exec_always --no-startup-id devilspie
-

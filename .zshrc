@@ -6,7 +6,7 @@ export EDITOR=vim
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="random"
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" "avit" )
-plugins=(git zsh-syntax-highlighting):
+plugins=(git zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
 ENABLE_CORRECTION="true"
@@ -99,6 +99,7 @@ CDPATH=.:$HOME:$HOME/code:$HOME/Desktop
 # Custom Aliases
 alias v=vim
 alias c="code"
+alias cr="code -r"
 alias vi=vim
 alias please=sudo
 alias r=ranger
@@ -132,13 +133,13 @@ alias aptgg="sudo apt-get upgrade"
 alias aptgar="sudo apt-get auto-remove"
 
 ## git aliases
-function gc { git commit -m "$@"; }
-alias gs="git status";
-alias gp="git pull";
-alias gf="git fetch";
-alias gpush="git push";
-alias gd="git diff";
-alias ga="git add .";
+#function gc { git commit -m "$@"; }
+#alias gs="git status";
+#alias gp="git pull";
+#alias gf="git fetch";
+#alias gpush="git push";
+#alias gd="git diff";
+#alias ga="git add .";
 
 ## npm aliases
 alias ni="npm install";
@@ -178,3 +179,15 @@ bindkey '^P' history-search-backward             # Go back/search in history (au
 bindkey '^N' history-search-forward              # Go forward/search in history (autocomplete)
 
 alias npm="sudo npm"
+alias python="python3"
+alias p="python3"
+alias pip="pip3"
+alias pi="pip3"
+alias ve="virtualenv"
+
+# zsh-syntax-highlighting
+source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# autojump
+[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
+autoload -U compinit && compinit -u

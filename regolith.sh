@@ -64,6 +64,9 @@ PKGS=(
     variety
     exa
     kitty
+    python3
+    python3-pip
+    python3-venv
 )
 
 # Keep-alive: update existing `sudo` time stamp until `install` has finished
@@ -80,12 +83,22 @@ _install "${PKGS[@]}"
 echo_info "Installing oh-my-zsh"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
+echo_info "Installing zsh-syntax-highlighting"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+# echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+
+echo_info "Installing zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+echo_info "Installing autojump"
+git clone git://github.com/wting/autojump.git
+cd autojump
+./install.py
+cd ..
+
 echo_info "Installing devilspie"
 sudo apt-get install devilspie
 mkdir -p ~/.devilspie
-
-echo_info "Installing kitty"
-curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
 echo_info "Installing youtube-dl"
 sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
