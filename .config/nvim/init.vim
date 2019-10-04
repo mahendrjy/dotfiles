@@ -54,6 +54,7 @@ Plug 'drewtempelmeyer/palenight.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 
+
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
 else
@@ -123,7 +124,6 @@ call plug#end()
 " Required:
 " Enable filetype plugins and indent for plug-ins to load correctly.
 filetype plugin indent on
-
 
 "*****************************************************************************
 "" Basic Setup
@@ -269,6 +269,13 @@ let g:airline_skip_empty_sections = 1
 "*****************************************************************************
 "" Abbreviations
 "*****************************************************************************
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Shortcuts
+nnoremap <Leader>o :Files<CR>
+nnoremap <Leader>O :CtrlP<CR>
+
 "" no one is really happy until you have this shortcuts
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
@@ -677,3 +684,11 @@ cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 	autocmd Filetype rmd inoremap ,r ```{r}<CR>```<CR><CR><esc>2kO
 	autocmd Filetype rmd inoremap ,p ```{python}<CR>```<CR><CR><esc>2kO
 	autocmd Filetype rmd inoremap ,c ```<cr>```<cr><cr><esc>2kO
+
+" normal mode: save
+nnoremap <c-s> :w<CR>
+" insert mode: escape to normal and save
+inoremap <c-s> <Esc>:w<CR>l
+" visual mode: escape to normal and save
+vnoremap <c-s> <Esc>:w<CR>
+

@@ -67,6 +67,7 @@ PKGS=(
     python3
     python3-pip
     python3-venv
+    pipenv
 )
 
 # Keep-alive: update existing `sudo` time stamp until `install` has finished
@@ -106,6 +107,9 @@ sudo chmod a+rx /usr/local/bin/youtube-dl
 
 echo_info "Installing vscode"
 sudo snap install --classic code
+
+echo_info "Installing slack"
+sudo snap install slack --classic
 
 echo "Generating an RSA token for GitHub"
 mkdir -p ~/.ssh

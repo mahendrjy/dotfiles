@@ -5,7 +5,7 @@ export EDITOR=vim
 
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="random"
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" "avit" )
+ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "avit" )
 plugins=(git zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
@@ -179,6 +179,7 @@ bindkey '^P' history-search-backward             # Go back/search in history (au
 bindkey '^N' history-search-forward              # Go forward/search in history (autocomplete)
 
 alias npm="sudo npm"
+alias n="node"
 alias python="python3"
 alias p="python3"
 alias pip="pip3"
@@ -191,3 +192,8 @@ source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # autojump
 [[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u
+
+# enable control-s and control-q
+stty start undef
+stty stop undef
+setopt noflowcontrol
