@@ -111,6 +111,15 @@ sudo snap install --classic code
 echo_info "Installing slack"
 sudo snap install slack --classic
 
+# makes git terminal output pretty
+git config --global color.ui true
+
+# this will mark me as the 'author' of each committed change
+git config --global user.name "Mahendra Choudhary"
+
+# use the email associated with your GitHub account
+git config --global user.email jakepintu@gmail.com
+
 echo "Generating an RSA token for GitHub"
 mkdir -p ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "jakepintu@gmail.com"
