@@ -1,10 +1,50 @@
+set nocompatible
+filetype off
+
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" This is the Vundle package, which can be found on GitHub.
+" For GitHub repos, you specify plugins using the
+" 'user/repository' format
+Plugin 'gmarik/vundle'
+
+" To get plugins from Vim Scripts, you can reference the plugin
+" by name as it appears on the site
+Plugin 'Buffergator'
+
+" if you use Vundle, load plugins:
+Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<a-j>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<a-k>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<a-j>'
+
+" " better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+
+" All of your Plugins must be added before the following line
+call vundle#end()
+" Now we can turn our filetype functionality back on
+filetype plugin indent on
+
 "*****************************************************************************
 "" Vim-PLug core
 "*****************************************************************************
 let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 
 let g:vim_bootstrap_langs = "html,javascript,python,typescript"
-let g:vim_bootstrap_editor = "nvim"				" nvim or vim
+let g:vim_bootstrap_editor = "nvim"       " nvim or vim
 
 if !filereadable(vimplug_exists)
   if !executable("curl")
@@ -42,18 +82,16 @@ Plug 'avelino/vim-bootstrap-updater'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 Plug 'tpope/vim-surround'
-Plug 'junegunn/goyo.vim'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'jreybert/vimagit'
 Plug 'vimwiki/vimwiki'
-Plug 'bling/vim-airline'
-Plug 'tpope/vim-commentary'
 Plug 'vifm/vifm.vim'
 Plug 'kovetskiy/sxhkd-vim'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-
+Plug 'chriskempson/base16-vim'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -63,17 +101,13 @@ else
 endif
 let g:make = 'gmake'
 if exists('make')
-        let g:make = 'make'
+  let g:make = 'make'
 endif
 Plug 'Shougo/vimproc.vim', {'do': g:make}
 
 "" Vim-Session
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-session'
-
-"" Snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 
 "" Color
 Plug 'tomasr/molokai'
@@ -84,7 +118,6 @@ Plug 'tomasr/molokai'
 " html
 "" HTML Bundle
 Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
 Plug 'tpope/vim-haml'
 Plug 'mattn/emmet-vim'
 
@@ -109,7 +142,33 @@ Plug 'HerringtonDarkholme/yats.vim'
 Plug 'posva/vim-vue'
 Plug 'leafOfTree/vim-vue-plugin'
 
+" ES2015 code snippets
+Plug 'epilande/vim-es2015-snippets'
 
+" React code snippets
+Plug 'epilande/vim-react-snippets'
+
+" BOOTSTRAP 4 SNIPPETS
+Plug 'jvanja/vim-bootstrap4-snippets'
+
+" Ruby
+Plug 'tpope/vim-endwise'
+
+" Vim Simple Todo
+Plug 'vitalk/vim-simple-todo'
+
+" Easy Motion
+Plug 'easymotion/vim-easymotion'
+
+" Move
+Plug 'matze/vim-move'
+
+" Auto Format
+Plug 'chiel92/vim-autoformat'
+Plug 'junegunn/rainbow_parentheses.vim'
+
+" Easy Align
+Plug 'junegunn/vim-easy-align'
 
 "*****************************************************************************
 "*****************************************************************************
@@ -143,10 +202,22 @@ set mouse=a
 set backspace=indent,eol,start
 
 "" Tabs. May be overridden by autocmd rules
-set tabstop=4
-set softtabstop=0
-set shiftwidth=4
+set tabstop=2
+" Number of spaces to use for a <Tab> during editing operations
+set softtabstop=2
+" The number of spaces to use for each indent
+set shiftwidth=2
+" Indent using spaces instead of tabs
 set expandtab
+
+
+" so I can go up an down wrapped lines
+map j gj
+map k gk
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Don't wrap lines
+":set nowrap
 
 "" Map leader to ,
 let mapleader=','
@@ -163,9 +234,9 @@ set smartcase
 set fileformats=unix,dos,mac
 
 if exists('$SHELL')
-    set shell=$SHELL
+  set shell=$SHELL
 else
-    set shell=/bin/sh
+  set shell=/bin/sh
 endif
 
 " session management
@@ -482,7 +553,7 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 "" Open current line on GitHub
-nnoremap <Leader>o :.Gbrowse<CR>
+" nnoremap <Leader>o :.Gbrowse<CR>
 
 "*****************************************************************************
 "" Custom configs
@@ -499,7 +570,7 @@ let g:javascript_enable_domhtmlcss = 1
 " vim-javascript
 augroup vimrc-javascript
   autocmd!
-  autocmd FileType javascript setl tabstop=4|setl shiftwidth=4|setl expandtab softtabstop=4
+  autocmd FileType javascript setl tabstop=2|setl shiftwidth=2|setl expandtab softtabstop=4
 augroup END
 
 
@@ -508,8 +579,8 @@ augroup END
 augroup vimrc-python
   autocmd!
   autocmd FileType python setlocal expandtab shiftwidth=4 tabstop=8 colorcolumn=79
-      \ formatoptions+=croq softtabstop=4
-      \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+        \ formatoptions+=croq softtabstop=4
+        \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
 augroup END
 
 " jedi-vim
@@ -525,7 +596,7 @@ let g:jedi#smart_auto_mappings = 0
 
 " ale
 :call extend(g:ale_linters, {
-    \'python': ['flake8'], })
+      \'python': ['flake8'], })
 
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
@@ -595,27 +666,11 @@ else
   let g:airline_symbols.linenr = ''
 endif
 
-" Enable autocompletion:
-set wildmode=longest,list,full
-
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" Goyo plugin makes text more readable when writing prose:
-map <leader>f :Goyo \| set bg=dark \| set linebreak<CR> \| set number
-
-" Spell-check set to <leader>o, 'o' for 'orthography':
-map <leader>o :setlocal spell! spelllang=en_us<CR>
-
-" Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
-set splitbelow splitright
-
-" Ensure files are read as what I want:
-let g:vimwiki_ext2syntax = {'.Rmd': 'markdown', '.rmd': 'markdown','.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
-let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax': 'markdown', 'ext': '.md'}]
-autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
-autocmd BufRead,BufNewFile *.ms,*.me,*.mom,*.man set filetype=groff
-autocmd BufRead,BufNewFile *.tex set filetype=tex
+"et numberSell-check set to <leader>o, 'o' for 'orthography':
+" map <leader>o :setlocal spell! spelllang=en_us<CR>
 
 " Automatically deletes all trailing whitespace on save.
 autocmd BufWritePre * %s/\s\+$//e
@@ -624,66 +679,66 @@ autocmd BufWritePre * %s/\s\+$//e
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 """HTML
-	autocmd FileType html inoremap ,b <b></b><Space><++><Esc>FbT>i
-	autocmd FileType html inoremap ,it <em></em><Space><++><Esc>FeT>i
-	autocmd FileType html inoremap ,1 <h1></h1><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,2 <h2></h2><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,3 <h3></h3><Enter><Enter><++><Esc>2kf<i
-	autocmd FileType html inoremap ,p <p></p><Enter><Enter><++><Esc>02kf>a
-	autocmd FileType html inoremap ,a <a<Space>href=""><++></a><Space><++><Esc>14hi
-	autocmd FileType html inoremap ,e <a<Space>target="_blank"<Space>href=""><++></a><Space><++><Esc>14hi
-	autocmd FileType html inoremap ,ul <ul><Enter><li></li><Enter></ul><Enter><Enter><++><Esc>03kf<i
-	autocmd FileType html inoremap ,li <Esc>o<li></li><Esc>F>a
-	autocmd FileType html inoremap ,ol <ol><Enter><li></li><Enter></ol><Enter><Enter><++><Esc>03kf<i
-	autocmd FileType html inoremap ,im <img src="" alt="<++>"><++><esc>Fcf"a
-	autocmd FileType html inoremap ,td <td></td><++><Esc>Fdcit
-	autocmd FileType html inoremap ,tr <tr></tr><Enter><++><Esc>kf<i
-	autocmd FileType html inoremap ,th <th></th><++><Esc>Fhcit
-	autocmd FileType html inoremap ,tab <table><Enter></table><Esc>O
-	autocmd FileType html inoremap ,gr <font color="green"></font><Esc>F>a
-	autocmd FileType html inoremap ,rd <font color="red"></font><Esc>F>a
-	autocmd FileType html inoremap ,yl <font color="yellow"></font><Esc>F>a
-	autocmd FileType html inoremap ,dt <dt></dt><Enter><dd><++></dd><Enter><++><esc>2kcit
-	autocmd FileType html inoremap ,dl <dl><Enter><Enter></dl><enter><enter><++><esc>3kcc
-	autocmd FileType html inoremap &<space> &amp;<space>
-	autocmd FileType html inoremap á &aacute;
-	autocmd FileType html inoremap é &eacute;
-	autocmd FileType html inoremap í &iacute;
-	autocmd FileType html inoremap ó &oacute;
-	autocmd FileType html inoremap ú &uacute;
-	autocmd FileType html inoremap ä &auml;
-	autocmd FileType html inoremap ë &euml;
-	autocmd FileType html inoremap ï &iuml;
-	autocmd FileType html inoremap ö &ouml;
-	autocmd FileType html inoremap ü &uuml;
-	autocmd FileType html inoremap ã &atilde;
-	autocmd FileType html inoremap ẽ &etilde;
-	autocmd FileType html inoremap ĩ &itilde;
-	autocmd FileType html inoremap õ &otilde;
-	autocmd FileType html inoremap ũ &utilde;
-	autocmd FileType html inoremap ñ &ntilde;
-	autocmd FileType html inoremap à &agrave;
-	autocmd FileType html inoremap è &egrave;
-	autocmd FileType html inoremap ì &igrave;
-	autocmd FileType html inoremap ò &ograve;
-	autocmd FileType html inoremap ù &ugrave;
+autocmd FileType html inoremap ,b <b></b><Space><++><Esc>FbT>i
+autocmd FileType html inoremap ,it <em></em><Space><++><Esc>FeT>i
+autocmd FileType html inoremap ,1 <h1></h1><Enter><Enter><++><Esc>2kf<i
+autocmd FileType html inoremap ,2 <h2></h2><Enter><Enter><++><Esc>2kf<i
+autocmd FileType html inoremap ,3 <h3></h3><Enter><Enter><++><Esc>2kf<i
+autocmd FileType html inoremap ,p <p></p><Enter><Enter><++><Esc>02kf>a
+autocmd FileType html inoremap ,a <a<Space>href=""><++></a><Space><++><Esc>14hi
+autocmd FileType html inoremap ,e <a<Space>target="_blank"<Space>href=""><++></a><Space><++><Esc>14hi
+autocmd FileType html inoremap ,ul <ul><Enter><li></li><Enter></ul><Enter><Enter><++><Esc>03kf<i
+autocmd FileType html inoremap ,li <Esc>o<li></li><Esc>F>a
+autocmd FileType html inoremap ,ol <ol><Enter><li></li><Enter></ol><Enter><Enter><++><Esc>03kf<i
+autocmd FileType html inoremap ,im <img src="" alt="<++>"><++><esc>Fcf"a
+autocmd FileType html inoremap ,td <td></td><++><Esc>Fdcit
+autocmd FileType html inoremap ,tr <tr></tr><Enter><++><Esc>kf<i
+autocmd FileType html inoremap ,th <th></th><++><Esc>Fhcit
+autocmd FileType html inoremap ,tab <table><Enter></table><Esc>O
+autocmd FileType html inoremap ,gr <font color="green"></font><Esc>F>a
+autocmd FileType html inoremap ,rd <font color="red"></font><Esc>F>a
+autocmd FileType html inoremap ,yl <font color="yellow"></font><Esc>F>a
+autocmd FileType html inoremap ,dt <dt></dt><Enter><dd><++></dd><Enter><++><esc>2kcit
+autocmd FileType html inoremap ,dl <dl><Enter><Enter></dl><enter><enter><++><esc>3kcc
+autocmd FileType html inoremap &<space> &amp;<space>
+autocmd FileType html inoremap á &aacute;
+autocmd FileType html inoremap é &eacute;
+autocmd FileType html inoremap í &iacute;
+autocmd FileType html inoremap ó &oacute;
+autocmd FileType html inoremap ú &uacute;
+autocmd FileType html inoremap ä &auml;
+autocmd FileType html inoremap ë &euml;
+autocmd FileType html inoremap ï &iuml;
+autocmd FileType html inoremap ö &ouml;
+autocmd FileType html inoremap ü &uuml;
+autocmd FileType html inoremap ã &atilde;
+autocmd FileType html inoremap ẽ &etilde;
+autocmd FileType html inoremap ĩ &itilde;
+autocmd FileType html inoremap õ &otilde;
+autocmd FileType html inoremap ũ &utilde;
+autocmd FileType html inoremap ñ &ntilde;
+autocmd FileType html inoremap à &agrave;
+autocmd FileType html inoremap è &egrave;
+autocmd FileType html inoremap ì &igrave;
+autocmd FileType html inoremap ò &ograve;
+autocmd FileType html inoremap ù &ugrave;
 
 "MARKDOWN
-	autocmd Filetype markdown,rmd map <leader>w yiWi[<esc>Ea](<esc>pa)
-	autocmd Filetype markdown,rmd inoremap ,n ---<Enter><Enter>
-	autocmd Filetype markdown,rmd inoremap ,b ****<++><Esc>F*hi
-	autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
-	autocmd Filetype markdown,rmd inoremap ,e **<++><Esc>F*i
-	autocmd Filetype markdown,rmd inoremap ,h ====<Space><++><Esc>F=hi
-	autocmd Filetype markdown,rmd inoremap ,i ![](<++>)<++><Esc>F[a
-	autocmd Filetype markdown,rmd inoremap ,a [](<++>)<++><Esc>F[a
-	autocmd Filetype markdown,rmd inoremap ,1 #<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,2 ##<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,3 ###<Space><Enter><++><Esc>kA
-	autocmd Filetype markdown,rmd inoremap ,l --------<Enter>
-	autocmd Filetype rmd inoremap ,r ```{r}<CR>```<CR><CR><esc>2kO
-	autocmd Filetype rmd inoremap ,p ```{python}<CR>```<CR><CR><esc>2kO
-	autocmd Filetype rmd inoremap ,c ```<cr>```<cr><cr><esc>2kO
+autocmd Filetype markdown,rmd map <leader>w yiWi[<esc>Ea](<esc>pa)
+autocmd Filetype markdown,rmd inoremap ,n ---<Enter><Enter>
+autocmd Filetype markdown,rmd inoremap ,b ****<++><Esc>F*hi
+autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
+autocmd Filetype markdown,rmd inoremap ,e **<++><Esc>F*i
+autocmd Filetype markdown,rmd inoremap ,h ====<Space><++><Esc>F=hi
+autocmd Filetype markdown,rmd inoremap ,i ![](<++>)<++><Esc>F[a
+autocmd Filetype markdown,rmd inoremap ,a [](<++>)<++><Esc>F[a
+autocmd Filetype markdown,rmd inoremap ,1 #<Space><Enter><++><Esc>kA
+autocmd Filetype markdown,rmd inoremap ,2 ##<Space><Enter><++><Esc>kA
+autocmd Filetype markdown,rmd inoremap ,3 ###<Space><Enter><++><Esc>kA
+autocmd Filetype markdown,rmd inoremap ,l --------<Enter>
+autocmd Filetype rmd inoremap ,r ```{r}<CR>```<CR><CR><esc>2kO
+autocmd Filetype rmd inoremap ,p ```{python}<CR>```<CR><CR><esc>2kO
+autocmd Filetype rmd inoremap ,c ```<cr>```<cr><cr><esc>2kO
 
 " normal mode: save
 nnoremap <c-s> :w<CR>
@@ -692,3 +747,46 @@ inoremap <c-s> <Esc>:w<CR>l
 " visual mode: escape to normal and save
 vnoremap <c-s> <Esc>:w<CR>
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use babylon parser with prettier
+let g:prettier#config#parser="babylon"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Run prettier asynchronously before saving
+let g:prettier#autoformat=0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use JSON in .babelrc files
+autocmd BufRead,BufNewFile .babelrc setfiletype json
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Allow JSX in .js files
+let g:jsx_ext_required=0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ignore node_modules with command-t
+let g:CommandTWildIgnore=&wildignore . ",*/node_modules"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+
+" Prettier
+nnoremap = :Autoformat<CR>
+nnoremap = :Prettier<CR>
+
+" key mapping in insert mode
+inoremap <c-k> <up>
+inoremap <c-j> <down>
+inoremap <c-h> <left>
+inoremap <c-l> <right>
+
+noremap <leader>/ :Commentary<cr>
+noremap <A-/> :Commentary<CR>

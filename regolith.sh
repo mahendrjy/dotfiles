@@ -64,10 +64,16 @@ PKGS=(
     variety
     exa
     kitty
+    python-dev
+    python3-dev
     python3
     python3-pip
     python3-venv
     pipenv
+    rbenv
+    sqlite
+    build-essential
+    cmake
 )
 
 # Keep-alive: update existing `sudo` time stamp until `install` has finished
@@ -111,14 +117,31 @@ sudo snap install --classic code
 echo_info "Installing slack"
 sudo snap install slack --classic
 
-# makes git terminal output pretty
-git config --global color.ui true
+echo_info "Installing ruby"
+sudo apt-get install ruby-full
 
-# this will mark me as the 'author' of each committed change
-git config --global user.name "Mahendra Choudhary"
+echo_info "Installing bundler pry byebug"
+sudo gem install bundler pry byebug
 
-# use the email associated with your GitHub account
-git config --global user.email jakepintu@gmail.com
+echo_info "Installing PostgreSQL"
+sudo apt-get install postgresql-client
+sudo apt-get install postgresql postgresql-contrib
+apt-cache search postgres
+sudo apt-get install pgadmin3
+
+# install rails
+sudo gem install rails
+
+echo_info "Installing Node.js"
+# Node.js download and run the official install script
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | bash
+
+echo "installing vundle"
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+
+# cd .vim/bundle/YouCompleteMe
+# python3 install.py --clang-completer
+# python3 install.py --all
 
 echo "Generating an RSA token for GitHub"
 mkdir -p ~/.ssh
@@ -136,6 +159,7 @@ mkdir ${HOME}/.config/regolith
 mkdir ${HOME}/.config/regolith/i3
 mkdir ${HOME}/.devilspie
 mkdir ${HOME}/.Xresources.d
+mkdir ${HOME}/code
 
 ln -sf "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
 ln -sf "${HOME}/dotfiles/.config/kitty/kitty.conf" "${HOME}/.config/kitty/kitty.conf"
@@ -147,4 +171,3 @@ ln -sf "${HOME}/dotfiles/.devilspie/transmission_transparent.ds" "${HOME}/.devil
 ln -sf "${HOME}/dotfiles/.devilspie/vscode_transparent.ds" "${HOME}/.devilspie/vscode_transparent.ds"
 ln -sf "${HOME}/dotfiles/.Xresources" "${HOME}/.Xresources"
 ln -sf "${HOME}/dotfiles/.Xresources.d/color-palenight" "${HOME}/.Xresources.d/color-palenight"
-

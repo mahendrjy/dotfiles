@@ -17,7 +17,7 @@ set $compton_config /etc/regolith/compton/config
 set $terminal_path /usr/bin/kitty
 
 # path to browser. Override this to specify a custom browser.
-set $browser_path /usr/bin/chromium-browser
+set $browser_path /usr/bin/google-chrome
 
 # path to editor. Override this to specify a custom editor.
 set $editor_path /snap/bin/code

@@ -4,8 +4,8 @@
 export EDITOR=vim
 
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="random"
-ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "avit" )
+ZSH_THEME="robbyrussell"
+#ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "avit" )
 plugins=(git zsh-autosuggestions)
 source $ZSH/oh-my-zsh.sh
 
@@ -98,11 +98,22 @@ CDPATH=.:$HOME:$HOME/code:$HOME/Desktop
 
 # Custom Aliases
 alias v=vim
+alias v.="vim ."
 alias c="code"
 alias cr="code -r"
 alias vi=vim
 alias please=sudo
-alias r=ranger
+alias ra=ranger
+alias vm="vifm ."
+alias r=ruby
+alias n="node"
+alias python="python3"
+alias p="python3"
+alias pip="pip3"
+alias pi="pip3"
+alias ve="virtualenv"
+alias t="touch"
+alias icat="kitty +kitten icat"
 
 # Changing "ls" to "exa"
 alias l='exa --color=always --group-directories-first'  # some files and dirs
@@ -155,6 +166,9 @@ alias nicache="npm install --prefer-offline";
 alias nioff="npm install --offline";
 
 # yarn aliases
+alias y="yarn"
+alias ya="yarn add"
+alias yad="yarn add --dev"
 alias yar="yarn run";
 alias yas="yarn run start -s --";
 alias yab="yarn run build -s --";
@@ -165,7 +179,8 @@ alias ypm="echo \"Installing deps without lockfile and ignoring engines\" && yar
 
 # Custom functions
 mg () { mkdir "$@" && cd "$@" || exit; }
-function crapp { cp -R ~/.crapp "$@"; }
+function cra { cp -R ~/.crapp "$@"; }
+function cga { cp -R ~/.gapp "$@"; }
 shorten() { node ~/code/pika.im/node_modules/.bin/netlify-shortener "$1" "$2"; }
 killport() { lsof -i tcp:"$*" | awk 'NR!=1 {print $2}' | xargs kill -9 ;}
 
@@ -178,14 +193,6 @@ bindkey '^S' history-incremental-search-forward  # Perform forward search in com
 bindkey '^P' history-search-backward             # Go back/search in history (autocomplete)
 bindkey '^N' history-search-forward              # Go forward/search in history (autocomplete)
 
-alias npm="sudo npm"
-alias n="node"
-alias python="python3"
-alias p="python3"
-alias pip="pip3"
-alias pi="pip3"
-alias ve="virtualenv"
-
 # zsh-syntax-highlighting
 source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
@@ -197,3 +204,10 @@ autoload -U compinit && compinit -u
 stty start undef
 stty stop undef
 setopt noflowcontrol
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
