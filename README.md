@@ -36,13 +36,18 @@ xclip -sel clip < ~/.ssh/id_rsa.pub
 #### Add SSH key to your GitHub Account
 
 - Go to settings
+
 - Click on SSH and GPG keys
   ![Click on SSH and GPG keys](https://devconnected.com/wp-content/uploads/2019/10/ssh-gpg.png)
+
 - Click on New SSH key
   ![Click on New SSH key](https://devconnected.com/wp-content/uploads/2019/10/ssh-key-create-768x284.png)
+
 - Write any Title, eg. Private, Pika
+
 - Paste the key
   ![Write any Title, eg. Private, Pika](https://devconnected.com/wp-content/uploads/2019/10/public-key-github-768x422.png)
+
 - Click on Add SSH key
   ![Click on Add SSH key](https://devconnected.com/wp-content/uploads/2019/10/ssh-keys.png)
 
