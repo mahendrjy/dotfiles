@@ -6,15 +6,58 @@
 
 ## Setup
 
-- Fork the repo
-- Open regolith.sh, go to bottom of the page, then change the email from `jakepintu@gmail.com` to `youremail@email.com'
+- Fork this repo
+- Open regolith.sh, change the email then save it
+
+```bash
+email="yourEmail@example.com"
+```
+
+- In Readme, at Install, change `iampika` to your github username, then run it
+
+```bash
+git clone https://github.com/yourUserName/dotfiles.git && cd dotfiles && chmod +x regolith.sh && ./regolith.sh
+```
 
 ## Install
 
-- Change `iampika` to your github username, then run it
-
 ```bash
 git clone https://github.com/iampika/dotfiles.git && cd dotfiles && chmod +x regolith.sh && ./regolith.sh
+```
+
+## After Install
+
+#### Copy SSH key
+
+```bash
+xclip -sel clip < ~/.ssh/id_rsa.pub
+```
+
+#### Add SSH key to your GitHub Account
+
+- Go to settings
+- Click on SSH and GPG keys
+  ![Click on SSH and GPG keys](https://devconnected.com/wp-content/uploads/2019/10/ssh-gpg.png)
+- Click on New SSH key
+  ![Click on New SSH key](https://devconnected.com/wp-content/uploads/2019/10/ssh-key-create-768x284.png)
+- Write any Title, eg. Private, Pika
+- Paste the key
+  ![Write any Title, eg. Private, Pika](https://devconnected.com/wp-content/uploads/2019/10/public-key-github-768x422.png)
+- Click on Add SSH key
+  ![Click on Add SSH key](https://devconnected.com/wp-content/uploads/2019/10/ssh-keys.png)
+
+#### Test GitHub SSH Keys
+
+```bash
+git clone git@github.com:yourUserName/private-repo.git
+```
+
+![Clone with SSH](https://devconnected.com/wp-content/uploads/2019/10/clone-download.png)
+
+Example
+
+```bash
+git clone git@github.com:iampika/dotfiles.git
 ```
 
 ## Preview
