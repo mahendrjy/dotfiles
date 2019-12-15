@@ -3,11 +3,34 @@
 # Vim for life
 export EDITOR=vim
 
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
-#ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "avit" )
-plugins=(git zsh-autosuggestions)
-source $ZSH/oh-my-zsh.sh
+# load zgen
+source "${HOME}/.zgen/zgen.zsh"
+
+# if the init scipt doesn't exist
+if ! zgen saved; then
+    echo "Creating a zgen save"
+
+    zgen oh-my-zsh
+
+    # plugins
+    zgen oh-my-zsh plugins/git
+    zgen oh-my-zsh plugins/sudo
+    zgen oh-my-zsh plugins/command-not-found
+    zgen oh-my-zsh plugins/autojump
+    zgen oh-my-zsh plugins/fasd
+    zgen load zsh-users/zsh-syntax-highlighting
+    zgen load zsh-users/zsh-autosuggestions
+    zgen load fdw/ranger_autojump
+
+    # completions
+    zgen load zsh-users/zsh-completions src
+
+    # theme
+    zgen oh-my-zsh themes/robbyrussell
+
+    # save all to init script
+    zgen save
+fi
 
 ENABLE_CORRECTION="true"
 export LANG=en_US.UTF-8
@@ -181,6 +204,8 @@ alias yv="sudo yarn run validate";
 alias yoff="sudo yarn add --offline";
 alias ypm="sudo echo \"Installing deps without lockfile and ignoring engines\" && yarn install --no-lockfile --ignore-engines"
 
+alias agi="add-gitignore"
+
 # Custom functions
 mg () { mkdir "$@" && cd "$@" || exit; }
 function cra { cp -R ~/.crapp "$@"; }
@@ -196,13 +221,6 @@ bindkey '^R' history-incremental-search-backward # Perform backward search in co
 bindkey '^S' history-incremental-search-forward  # Perform forward search in command line history
 bindkey '^P' history-search-backward             # Go back/search in history (autocomplete)
 bindkey '^N' history-search-forward              # Go forward/search in history (autocomplete)
-
-# zsh-syntax-highlighting
-source $HOME/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# autojump
-[[ -s $HOME/.autojump/etc/profile.d/autojump.sh ]] && source $HOME/.autojump/etc/profile.d/autojump.sh
-autoload -U compinit && compinit -u
 
 # enable control-s and control-q
 stty start undef
@@ -225,3 +243,5 @@ function ranger-cd {
     fi
     rm -f -- "$tempfile"
 }
+
+alias d='ddgr'

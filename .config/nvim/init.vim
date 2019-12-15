@@ -1,43 +1,6 @@
 set nocompatible
 filetype off
 
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" This is the Vundle package, which can be found on GitHub.
-" For GitHub repos, you specify plugins using the
-" 'user/repository' format
-Plugin 'gmarik/vundle'
-
-" To get plugins from Vim Scripts, you can reference the plugin
-" by name as it appears on the site
-Plugin 'Buffergator'
-
-" if you use Vundle, load plugins:
-Plugin 'ervandew/supertab'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
-
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<a-j>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<a-k>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<a-j>'
-
-" " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-" Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
-
-" All of your Plugins must be added before the following line
-call vundle#end()
-" Now we can turn our filetype functionality back on
-filetype plugin indent on
-
 "*****************************************************************************
 "" Vim-PLug core
 "*****************************************************************************
