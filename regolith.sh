@@ -48,32 +48,32 @@ PKGS=(
     curl
     wget
     zsh
-    git
-    neovim
-    ranger
-    vifm
-    toilet
-    lolcat
+#    git
+#    neovim
+#    ranger
+#    vifm
+#    toilet
+#    lolcat
     vlc
     transmission
     ffmpeg
     htop
-    neofetch
+#    neofetch
     tree
     nethogs
     variety
     exa
     kitty
-    python-dev
-    python3-dev
-    python3
-    python3-pip
-    python3-venv
-    pipenv
-    rbenv
-    sqlite
-    build-essential
-    cmake
+#    python-dev
+#    python3-dev
+#    python3
+#    python3-pip
+#    python3-venv
+#    pipenv
+#    rbenv
+#    sqlite
+#    build-essential
+#    cmake
 )
 
 # Keep-alive: update existing `sudo` time stamp until `install` has finished
@@ -91,14 +91,18 @@ echo_info "Installing oh-my-zsh"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 echo_info "Installing zsh-syntax-highlighting"
+cd ..
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+cd dotfiles
 # echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
 
 echo_info "Installing zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 echo_info "Installing autojump"
+cd ..
 git clone git://github.com/wting/autojump.git
+cd dotfiles
 cd autojump
 ./install.py
 cd ..
@@ -114,23 +118,23 @@ sudo chmod a+rx /usr/local/bin/youtube-dl
 echo_info "Installing vscode"
 sudo snap install --classic code
 
-echo_info "Installing slack"
-sudo snap install slack --classic
+#echo_info "Installing slack"
+#sudo snap install slack --classic
 
-echo_info "Installing ruby"
-sudo apt-get install ruby-full
+#echo_info "Installing ruby"
+#sudo apt-get install ruby-full
 
-echo_info "Installing bundler pry byebug"
-sudo gem install bundler pry byebug
+#echo_info "Installing bundler pry byebug"
+#sudo gem install bundler pry byebug
 
-echo_info "Installing PostgreSQL"
-sudo apt-get install postgresql-client
-sudo apt-get install postgresql postgresql-contrib
-apt-cache search postgres
-sudo apt-get install pgadmin3
+#echo_info "Installing PostgreSQL"
+#sudo apt-get install postgresql-client
+#sudo apt-get install postgresql postgresql-contrib
+#apt-cache search postgres
+#sudo apt-get install pgadmin3
 
-# install rails
-sudo gem install rails
+## install rails
+#sudo gem install rails
 
 echo_info "Installing Node.js"
 # Node.js download and run the official install script
@@ -150,11 +154,12 @@ echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa
 eval "$(ssh-agent -s)"
 echo "run 'pbcopy < ~/.ssh/id_rsa.pub' and paste that into GitHub"
 
-echo "cloning dotfiles"
-git clone https://github.com/jakepintu/dotfiles.git
+#echo "cloning dotfiles"
+#git clone https://github.com/jakepintu/dotfiles.git
 
 mkdir ${HOME}/.config/kitty
 mkdir ${HOME}/.config/nvim
+mkdir ${HOME}/.config/ranger
 mkdir ${HOME}/.config/regolith
 mkdir ${HOME}/.config/regolith/i3
 mkdir ${HOME}/.devilspie
@@ -164,6 +169,7 @@ mkdir ${HOME}/code
 ln -sf "${HOME}/dotfiles/.zshrc" "${HOME}/.zshrc"
 ln -sf "${HOME}/dotfiles/.config/kitty/kitty.conf" "${HOME}/.config/kitty/kitty.conf"
 ln -sf "${HOME}/dotfiles/.config/nvim/init.vim" "${HOME}/.config/nvim/init.vim"
+ln -sf "${HOME}/dotfiles/.config/ranger/rc.conf" "${HOME}/.config/ranger/rc.conf"
 ln -sf "${HOME}/dotfiles/.config/regolith/i3/config" "${HOME}/.config/regolith/i3/config"
 ln -sf "${HOME}/dotfiles/.devilspie/firefox_transparent.ds" "${HOME}/.devilspie/firefox_transparent.ds"
 ln -sf "${HOME}/dotfiles/.devilspie/kitty_transparent.ds" "${HOME}/.devilspie/kitty_transparent.ds"

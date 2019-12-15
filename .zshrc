@@ -103,9 +103,9 @@ alias c="code"
 alias cr="code -r"
 alias vi=vim
 alias please=sudo
-alias ra=ranger
+alias r=ranger-cd
 alias vm="vifm ."
-alias r=ruby
+alias ru=ruby
 alias n="node"
 alias python="python3"
 alias p="python3"
@@ -129,6 +129,7 @@ alias pg="echo 'Pinging Google' && ping www.google.com";
 
 alias vz="vim ~/.zshrc"
 alias vn="vim ~/.config/nvim/init.vim"
+alias vr="vim ~/.config/ranger/rc.conf"
 
 alias de="cd ~/Desktop";
 
@@ -143,14 +144,17 @@ alias aptgu="sudo apt-get update"
 alias aptgg="sudo apt-get upgrade"
 alias aptgar="sudo apt-get auto-remove"
 
+alias git="hub"
+
 ## git aliases
-#function gc { git commit -m "$@"; }
-#alias gs="git status";
-#alias gp="git pull";
-#alias gf="git fetch";
-#alias gpush="git push";
-#alias gd="git diff";
-#alias ga="git add .";
+alias gi="git init";
+alias ga="git add";
+alias gc="git commit -m";
+alias gs="git status";
+alias gpu="git pull";
+alias gf="git fetch";
+alias gp="git push";
+alias gd="git diff";
 
 ## npm aliases
 alias ni="npm install";
@@ -166,16 +170,16 @@ alias nicache="npm install --prefer-offline";
 alias nioff="npm install --offline";
 
 # yarn aliases
-alias y="yarn"
-alias ya="yarn add"
-alias yad="yarn add --dev"
-alias yar="yarn run";
-alias yas="yarn run start -s --";
-alias yab="yarn run build -s --";
-alias yat="yarn run test -s --";
-alias yav="yarn run validate -s --";
-alias yoff="yarn add --offline";
-alias ypm="echo \"Installing deps without lockfile and ignoring engines\" && yarn install --no-lockfile --ignore-engines"
+alias y="sudo yarn"
+alias ya="sudo yarn add"
+alias yad="sudo yarn add --dev"
+alias yr="sudo yarn run";
+alias ys="sudo yarn run start";
+alias yb="sudo yarn run build";
+alias yt="sudo yarn run test";
+alias yv="sudo yarn run validate";
+alias yoff="sudo yarn add --offline";
+alias ypm="sudo echo \"Installing deps without lockfile and ignoring engines\" && yarn install --no-lockfile --ignore-engines"
 
 # Custom functions
 mg () { mkdir "$@" && cd "$@" || exit; }
@@ -205,9 +209,19 @@ stty start undef
 stty stop undef
 setopt noflowcontrol
 
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+#export PATH="$HOME/.rbenv/bin:$PATH"
+#eval "$(rbenv init -)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+function ranger-cd {
+    tempfile="$(mktemp -t tmp.XXXXXX)"
+    ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+    test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+        cd -- "$(cat "$tempfile")"
+    fi
+    rm -f -- "$tempfile"
+}
