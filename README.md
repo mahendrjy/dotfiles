@@ -16,10 +16,7 @@ email="yourEmail@example.com"
 - In Readme, at Install, change `iampika` to your github username, then run it
 
 ```bash
-git clone https://github.com/yourUserName/dotfiles.git &&
-cd dotfiles &&
-chmod +x regolith.sh &&
-./regolith.sh
+git clone https://github.com/yourUserName/dotfiles.git
 ```
 
 ## Install
