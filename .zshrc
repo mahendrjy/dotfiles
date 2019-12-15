@@ -9,7 +9,6 @@ source "${HOME}/.zgen/zgen.zsh"
 # if the init scipt doesn't exist
 if ! zgen saved; then
     echo "Creating a zgen save"
-
     zgen oh-my-zsh
 
     # plugins
@@ -245,3 +244,10 @@ function ranger-cd {
 }
 
 alias d='ddgr'
+alias wi="wikit"
+alias lc="lolcat"
+alias iu="imgur-uploader"
+m () { figlet "$@" | lolcat; }
+tm () { toilet -f mono12 "$@" | lc }
+tb () { toilet -f bigmono12 "$@" | lc }
+tf () { toilet -f future "$@" | lc; }

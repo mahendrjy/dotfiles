@@ -19,6 +19,7 @@ PKGS=(
     vifm
     toilet
     lolcat
+    figlet
     vlc
     transmission
     ffmpeg
@@ -42,6 +43,7 @@ PKGS=(
     nodejs
     ddgr
     xclip
+    taskwarrior
 #    rbenv
 #    sqlite
 )
@@ -117,6 +119,12 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 
 npm i -g add-gitignore
 npm i -g lite-server
+npm i -g wikit
+npm i -g pageres
+npm i -g surge
+npm i -g imgur-uploader-cli
+npm i -g share-cli
+# npm i --g brightness-cli
 
 # fasd sudo add-apt-repository ppa:aacebedo/fasd
 sudo apt-get update
@@ -166,6 +174,7 @@ ln -sf "${HOME}/dotfiles/.config/ranger/commands.py" "${HOME}/.config/ranger/com
 ln -sf "${HOME}/dotfiles/.config/ranger/plugins/autojump.py" "${HOME}/.config/ranger/plugins/autojump.py"
 ln -sf "${HOME}/dotfiles/.config/ranger/plugins/plugin_fasd_log.py.py" "${HOME}/.config/ranger/plugins/plugin_fasd_log.py.py"
 ln -sf "${HOME}/dotfiles/.config/regolith/i3/config" "${HOME}/.config/regolith/i3/config"
+ln -sf "${HOME}/dotfiles/.ssh/config" "${HOME}/.ssh/config"
 ln -sf "${HOME}/dotfiles/.devilspie/firefox_transparent.ds" "${HOME}/.devilspie/firefox_transparent.ds"
 ln -sf "${HOME}/dotfiles/.devilspie/kitty_transparent.ds" "${HOME}/.devilspie/kitty_transparent.ds"
 ln -sf "${HOME}/dotfiles/.devilspie/transmission_transparent.ds" "${HOME}/.devilspie/transmission_transparent.ds"
