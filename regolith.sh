@@ -83,6 +83,7 @@ PKGS=(
     w3m
     nodejs
     ddgr
+    xclip
 #    rbenv
 #    sqlite
 )
@@ -139,7 +140,8 @@ mkdir -p ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "jakepintu@gmail.com"
 echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" | tee ~/.ssh/config
 eval "$(ssh-agent -s)"
-echo "run 'pbcopy < ~/.ssh/id_rsa.pub' and paste that into GitHub"
+ssh-add ~/.ssh/id_rsa
+echo "run 'xclip -sel clip < ~/.ssh/id_rsa.pub' and paste that into GitHub"
 
 mkdir ${HOME}/.config/kitty
 mkdir ${HOME}/.config/nvim
