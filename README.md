@@ -1,9 +1,20 @@
 # Dotfiles
 
+## Pre Requirements
+
+- [Regolith Linux](https://regolith-linux.org/)
+
+## Setup
+
+- Fork the repo
+- Open regolith.sh, go to bottom of the page, then change the email from `jakepintu@gmail.com` to `youremail@email.com'
+
 ## Install
 
+- Change `iampika` to your github username, then run it
+
 ```bash
-git clone https://github.com/jakepintu/dotfiles.git && cd dotfiles && chmod +x regolith.sh && ./regolith.sh
+git clone https://github.com/iampika/dotfiles.git && cd dotfiles && chmod +x regolith.sh && ./regolith.sh
 ```
 
 ## Preview

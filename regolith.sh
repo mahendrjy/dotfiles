@@ -135,13 +135,15 @@ sudo apt-get install fasd
 # install rails
 #sudo gem install rails
 
+# How to Setup SSH Keys on GitHub
+# https://devconnected.com/how-to-setup-ssh-keys-on-github/
 echo "Generating an RSA token for GitHub"
-mkdir -p ~/.ssh
-ssh-keygen -t rsa -b 4096 -C "jakepintu@gmail.com"
-echo "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_rsa" | tee ~/.ssh/config
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_rsa
-echo "run 'xclip -sel clip < ~/.ssh/id_rsa.pub' and paste that into GitHub"
+cd ~/.ssh/
+echo 'ssh-keygen -t rsa -b 4096 -C "jakepintu@gmail.com"'
+echo 'cat ~/.ssh/id_rsa.pub'
+echo 'xclip -sel clip < ~/.ssh/id_rsa.pub'
+echo 'Add SSH key to your GitHub Account'
+cd ~/dotfiles/
 
 mkdir ${HOME}/.config/kitty
 mkdir ${HOME}/.config/nvim
