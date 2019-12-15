@@ -2,54 +2,12 @@
 
 # Written by Mahendra Choudhary
 # Run without downloading:
-# curl https://raw.githubusercontent.com/jakepintu/dotfiles/master/regolith | bash
+# git clone https://github.com/iampika/dotfiles.git && cd dotfiles && chmod +x regolith.sh && ./regolith.sh
 
 # Ask for the administrator password upfront
 sudo -v
 
-blue=$(tput setaf 4)
-green=$(tput setaf 2)
-red=$(tput setaf 1)
-yellow=$(tput setaf 3)
-normal=$(tput sgr0)
-
-function echo_error() {
-  printf "[${red}!!${normal}] $1 \n"
-}
-
-function echo_warning() {
-  printf "[${yellow}/\${normal}] $1 \n"
-}
-
-function echo_success() {
-  printf "[${green}OK${normal}] $1 \n"
-}
-
-function echo_info() {
-  printf "[${blue}..${normal}] $1 \n"
-}
-
-function _install() {
-    pkgs=("$@")
-    echo_info "Installing ${pkgs[@]}..."
-    sudo apt install ${pkgs[@]}
-    echo_success "Installed ${pkgs[@]}"
-}
-
-function _install() {
-    pkgs=("$@")
-    echo_info "Installing ${pkgs[@]}..."
-    sudo apt install ${pkgs[@]}
-    echo_success "Installed ${pkgs[@]}"
-}
-
-function _update() {
-    echo_info "Updating $1"
-    sudo apt update
-    sudo apt upgrade
-    sudo apt auto-remove
-    echo_success "Updated $1"
-}
+email='jakepintu@gmail.com'
 
 PKGS=(
     curl
@@ -87,6 +45,50 @@ PKGS=(
 #    rbenv
 #    sqlite
 )
+
+blue=$(tput setaf 4)
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+yellow=$(tput setaf 3)
+normal=$(tput sgr0)
+
+function echo_error() {
+  printf "[${red}!!${normal}] $1 \n"
+}
+
+function echo_warning() {
+  printf "[${yellow}/\${normal}] $1 \n"
+}
+
+function echo_success() {
+  printf "[${green}OK${normal}] $1 \n"
+}
+
+function echo_info() {
+  printf "[${blue}..${normal}] $1 \n"
+}
+
+function _install() {
+    pkgs=("$@")
+    echo_info "Installing ${pkgs[@]}..."
+    sudo apt install ${pkgs[@]}
+    echo_success "Installed ${pkgs[@]}"
+}
+
+function _install() {
+    pkgs=("$@")
+    echo_info "Installing ${pkgs[@]}..."
+    sudo apt install -y ${pkgs[@]}
+    echo_success "Installed ${pkgs[@]}"
+}
+
+function _update() {
+    echo_info "Updating $1"
+    sudo apt update
+    sudo apt upgrade
+    sudo apt auto-remove
+    echo_success "Updated $1"
+}
 
 # Keep-alive: update existing `sudo` time stamp until `install` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
@@ -139,10 +141,10 @@ sudo apt-get install fasd
 # https://devconnected.com/how-to-setup-ssh-keys-on-github/
 echo "Generating an RSA token for GitHub"
 cd ~/.ssh/
-echo 'ssh-keygen -t rsa -b 4096 -C "jakepintu@gmail.com"'
-echo 'cat ~/.ssh/id_rsa.pub'
-echo 'xclip -sel clip < ~/.ssh/id_rsa.pub'
-echo 'Add SSH key to your GitHub Account'
+echo "ssh-keygen -t rsa -b 4096 -C ${email}"
+echo "cat ~/.ssh/id_rsa.pub"
+echo "xclip -sel clip < ~/.ssh/id_rsa.pub"
+echo "Add SSH key to your GitHub Account"
 cd ~/dotfiles/
 
 mkdir ${HOME}/.config/kitty
