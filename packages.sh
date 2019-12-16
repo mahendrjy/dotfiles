@@ -41,4 +41,5 @@ export PKG=(
   poppler-utils
   mediainfo
   fzf
+  autojump
 )

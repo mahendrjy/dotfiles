@@ -27,6 +27,9 @@ Install
 ```shell
 cd ~/dotfiles
 make install
+
+# After install Oh.My.Zsh, please run it again
+make install
 ```
 
 ## :bomb: Uninstalling (Comming Soon)
