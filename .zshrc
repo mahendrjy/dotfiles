@@ -251,3 +251,5 @@ m () { figlet "$@" | lolcat; }
 tm () { toilet -f mono12 "$@" | lc }
 tb () { toilet -f bigmono12 "$@" | lc }
 tf () { toilet -f future "$@" | lc; }
+
+export PROMPT="$PROMPT\$(git-radar --zsh --fetch) "

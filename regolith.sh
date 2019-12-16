@@ -44,6 +44,7 @@ PKGS=(
     ddgr
     xclip
     taskwarrior
+    linuxbrew-wrapper
 #    rbenv
 #    sqlite
 )
