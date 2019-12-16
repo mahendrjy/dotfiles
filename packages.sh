@@ -35,7 +35,6 @@ export PKG=(
   nodejs
   ddgr
   xclip
-  taskwarrior
   linuxbrew-wrapper
   atool
   poppler-utils

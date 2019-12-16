@@ -19,6 +19,7 @@ npm i -g pageres
 npm i -g surge
 npm i -g imgur-uploader-cli
 npm i -g share-cli
+npm i -g prettier
 # npm i --g brightness-cli
 
 echo_done "Node configuration!"

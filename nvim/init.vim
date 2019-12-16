@@ -55,6 +55,9 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'chriskempson/base16-vim'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'mattn/emmet-vim'
+Plug 'chrisbra/Colorizer'
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -753,3 +756,4 @@ inoremap <c-l> <right>
 
 noremap <leader>/ :Commentary<cr>
 noremap <A-/> :Commentary<CR>
+

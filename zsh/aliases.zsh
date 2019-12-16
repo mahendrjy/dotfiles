@@ -7,16 +7,7 @@ alias vim="nvim"
 alias n="npm"
 alias r="ranger"
 
-alias gig=git-ignore
 alias git="hub"
-alias gi="git init"
-alias ga="git add"
-alias gc="git commit -m"
-alias gs="git status"
-alias gpu="git pull"
-alias gf="git fetch"
-alias gp="git push"
-alias gd="git diff"
 
 alias pls=please
 
@@ -27,7 +18,6 @@ alias mkt="make test"
 
 # terminal rickroll 🕺💃
 alias rr='curl -s -L https://raw.githubusercontent.com/keroserene/rickrollrc/master/roll.sh | bash'
-
 alias t="touch"
 
 alias v=vim
@@ -64,17 +54,6 @@ alias vz="vim ~/.zshrc"
 alias vn="vim ~/.config/nvim/init.vim"
 alias vr="vim ~/.config/ranger/rc.conf"
 
-alias apti="sudo apt install"
-alias aptr="sudo apt remove"
-alias aptu="sudo apt update"
-alias aptg="sudo apt upgrade"
-alias aptar="sudo apt auto-remove"
-alias aptgi="sudo apt-get install"
-alias aptgr="sudo apt-get remove"
-alias aptgu="sudo apt-get update"
-alias aptgg="sudo apt-get upgrade"
-alias aptgar="sudo apt-get auto-remove"
-
 alias ni="npm install"
 alias nrs="npm run start -s --"
 alias nrb="npm run build -s --"
@@ -86,18 +65,6 @@ alias rmn="rm -rf node_modules"
 alias flush-npm="rm -rf node_modules && npm i && say NPM is done"
 alias nicache="npm install --prefer-offline"
 alias nioff="npm install --offline"
-
-# yarn aliases
-alias y="sudo yarn"
-alias ya="sudo yarn add"
-alias yad="sudo yarn add --dev"
-alias yr="sudo yarn run"
-alias ys="sudo yarn run start"
-alias yb="sudo yarn run build"
-alias yt="sudo yarn run test"
-alias yv="sudo yarn run validate"
-alias yoff="sudo yarn add --offline"
-alias ypm="sudo echo \"Installing deps without lockfile and ignoring engines\" && yarn install --no-lockfile --ignore-engines"
 
 alias agi="add-gitignore"
 
