@@ -1,9 +1,60 @@
 # Dotfiles
 
+I really like to configure my system in every possible way. This repository
+holds how I do it. If you are just starting out you could use mine but for your own sake **read them**. You
+will not get the most out of it without.
+
+## Pre Requirements
+
+- [Regolith Linux](https://regolith-linux.org/)
+
+## :rocket: Installing
+
+I follow a very modular approach. If you don't want something you can just
+remove it's folder. Imagine you don't want Neovim. You can just delete `nvim`
+folder. It's that simple.
+
+Start by cloning my `dotfiles` into `~/dotfiles`.
+
+If you don't want ssh then delete the ssh folder else open ssh/install.sh in your code editor, then change the email to yours then save it
+
+```shell
+email="yourEmail@example.com"
+```
+
+Install
+
+```shell
+cd ~/dotfiles
+make install
+```
+
+## :bomb: Uninstalling (Comming Soon)
+
+```shell
+cd ~/dotfiles
+make uninstall
+cd ~
+rm -rf ~/dotfiles
+```
+
+## :warning: Disclaimer
+
+As you probably know, you shouldn't just run my Makefile without reading it
+first. And if you read it, you will understand that it calls other scripts like
+`install.sh` which depend on `helpers.sh`. Read those, it's the only way that
+you can trust what it is doing.
+
+## After Install
+
+Add SSH key to your GitHub Account
+
+[How to Setup SSH Keys on GitHub](https://devconnected.com/how-to-setup-ssh-keys-on-github/)
+
 ## Preview
 
 - Editor - VsCode
-- Theme - Palenight, using Palenight Operator
+- Theme - Palenight, using Pale night Operator
 - Editor Font Family - Operator Mono with font ligatures
 - Transparent Background - Devilspie (linux)
 
@@ -47,71 +98,3 @@
 - Preview code with highlights inside ranger
 
 ![](https://lh3.googleusercontent.com/-2AjyK-9uK4I/XfZH26EPSfI/AAAAAAAABNc/cnT-XbbSgTYY4VccA-zfIPrcR6k8yFLGQCK8BGAsYHg/s0/Screenshot%2Bfrom%2B2019-12-15%2B17-05-19.png)
-
-## Pre Requirements
-
-- [Regolith Linux](https://regolith-linux.org/)
-
-## Setup
-
-- Fork this repo
-- Open regolith.sh, change the email then save it
-
-```bash
-email="yourEmail@example.com"
-```
-
-- In Readme, at Install, change `iampika` to your github username, then run it
-
-```bash
-git clone https://github.com/yourUserName/dotfiles.git
-```
-
-## Install
-
-```bash
-git clone https://github.com/iampika/dotfiles.git &&
-cd dotfiles &&
-chmod +x regolith.sh &&
-./regolith.sh
-```
-
-## After Install
-
-#### Copy SSH key
-
-```bash
-xclip -sel clip < ~/.ssh/id_rsa.pub
-```
-
-#### Add SSH key to your GitHub Account
-
-- Go to settings
-
-- Click on SSH and GPG keys
-  ![Click on SSH and GPG keys](https://devconnected.com/wp-content/uploads/2019/10/ssh-gpg.png)
-
-- Click on New SSH key
-  ![Click on New SSH key](https://devconnected.com/wp-content/uploads/2019/10/ssh-key-create-768x284.png)
-
-- Write any Title, eg. Private, Pika
-
-- Paste the key
-  ![Write any Title, eg. Private, Pika](https://devconnected.com/wp-content/uploads/2019/10/public-key-github-768x422.png)
-
-- Click on Add SSH key
-  ![Click on Add SSH key](https://devconnected.com/wp-content/uploads/2019/10/ssh-keys.png)
-
-#### Test GitHub SSH Keys
-
-```bash
-git clone git@github.com:yourUserName/private-repo.git
-```
-
-![Clone with SSH](https://devconnected.com/wp-content/uploads/2019/10/clone-download.png)
-
-Example
-
-```bash
-git clone git@github.com:iampika/dotfiles.git
-```

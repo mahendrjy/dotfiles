@@ -1,0 +1,44 @@
+#!/bin/bash
+
+export PKG=(
+  curl
+  wget
+  zsh
+  git
+  neovim
+  ranger
+  vifm
+  toilet
+  lolcat
+  figlet
+  vlc
+  transmission
+  ffmpeg
+  htop
+  neofetch
+  tree
+  nethogs
+  variety
+  exa
+  kitty
+  devilspie
+  python-chardet
+  ffmpegthumbnailer
+  python3
+  python3-pip
+  python3-venv
+  pipenv
+  caca-utils
+  highlight
+  bsdtar
+  w3m
+  nodejs
+  ddgr
+  xclip
+  taskwarrior
+  linuxbrew-wrapper
+  atool
+  poppler-utils
+  mediainfo
+  fzf
+)
