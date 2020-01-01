@@ -41,4 +41,5 @@ export PKG=(
   mediainfo
   fzf
   autojump
+  httrack
 )

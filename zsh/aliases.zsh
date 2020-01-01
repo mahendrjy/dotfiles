@@ -51,6 +51,9 @@ alias grep='grep --colour=auto'
 alias pg="echo 'Pinging Google' && ping www.google.com"
 
 alias vz="vim ~/.zshrc"
+alias vza="vim ~/dotfiles/zsh/aliases.zsh"
+alias vzp="vim ~/dotfiles/zsh/plugins.zsh"
+alias vzf="vim ~/dotfiles/zsh/functions.zsh"
 alias vn="vim ~/.config/nvim/init.vim"
 alias vr="vim ~/.config/ranger/rc.conf"
 
@@ -72,3 +75,30 @@ alias d='ddgr'
 alias wi="wikit"
 alias lc="lolcat"
 alias iu="imgur-uploader"
+
+# Easier directory navigation.
+alias ~="cd ~"
+alias .="cd .."
+alias ..="cd ../.."
+alias ...="cd ../../.."
+alias ....="cd ../../../.."
+
+# Docker
+alias d="docker"
+alias dr="docker run"
+alias drit="docker run -it"
+alias dc="docker create"
+alias ds="docker start"
+alias dl="docker logs"
+alias dsa="docker start -a"
+alias dps="docker ps"
+alias dpsa="docker ps --all"
+alias dst="docker stop"
+alias dk="docker kill"
+alias dsp="docker system prune"
+alias deit="docker exec -it"
+alias db="docker build"
+alias dcc="docker commit -c"
+
+# Git
+alias gs="git status"

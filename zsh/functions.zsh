@@ -81,7 +81,6 @@ lfcd() {
 
 bindkey -s '^o' 'lfcd\n'
 
-mg() { mkdir "$@" && cd "$@" || exit; }
 shorten() { node ~/code/pika.im/node_modules/.bin/netlify-shortener "$1" "$2"; }
 killport() { lsof -i tcp:"$*" | awk 'NR!=1 {print $2}' | xargs kill -9; }
 

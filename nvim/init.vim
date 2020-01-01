@@ -39,7 +39,6 @@ Plug 'vim-scripts/grep.vim'
 Plug 'vim-scripts/CSApprox'
 Plug 'Raimondi/delimitMate'
 Plug 'majutsushi/tagbar'
-Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
 Plug 'avelino/vim-bootstrap-updater'
 Plug 'sheerun/vim-polyglot'
@@ -58,6 +57,38 @@ Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 Plug 'chrisbra/Colorizer'
+Plug 'mileszs/ack.vim'
+Plug 'dense-analysis/ale'
+Plug 'jiangmiao/auto-pairs'
+Plug 'ervandew/supertab'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'jxnblk/vim-mdx-js'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'neoclide/coc-snippets'
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+
+
+
 
 if isdirectory('/usr/local/opt/fzf')
   Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -309,10 +340,6 @@ let g:airline_skip_empty_sections = 1
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-" Shortcuts
-nnoremap <Leader>o :Files<CR>
-nnoremap <Leader>O :CtrlP<CR>
-
 "" no one is really happy until you have this shortcuts
 cnoreabbrev W! w!
 cnoreabbrev Q! q!
@@ -340,7 +367,7 @@ map <leader>n :NERDTreeToggle<CR>
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
+nnoremap <silent> <leader>g :Rgrep<CR>
 let Grep_Default_Options = '-IR'
 let Grep_Skip_Files = '*.log *.db'
 let Grep_Skip_Dirs = '.git node_modules'
@@ -756,4 +783,90 @@ inoremap <c-l> <right>
 
 noremap <leader>/ :Commentary<cr>
 noremap <A-/> :Commentary<CR>
+
+:imap jk <Esc>
+:imap kj <Esc>
+
+" Shortcuts
+nnoremap <c-p> :Files<CR>
+
+" Indent using spaces instead of tabs
+set expandtab
+
+" The number of spaces to use for each indent
+set shiftwidth=2
+
+" Number of spaces to use for a <Tab> during editing operations
+set softtabstop=2"
+
+" so I can go up an down wrapped lines
+map j gj
+map k gk
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Line numbers
+:set number
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Don't wrap lines
+:set nowrap
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" toggle commenting of lines with command + /
+nmap <D-/> :Commentary<CR>
+vmap <D-/> :Commentary<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ctrlp use .gitignore
+" https://github.com/kien/ctrlp.vim/issues/174
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use babylon parser with prettier
+let g:prettier#config#parser="babylon"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Run prettier asynchronously before saving
+let g:prettier#autoformat=0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md PrettierAsync
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use JSON in .babelrc files
+autocmd BufRead,BufNewFile .babelrc setfiletype json
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Allow JSX in .js files
+let g:jsx_ext_required=0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ignore node_modules with command-t
+let g:CommandTWildIgnore=&wildignore . ",*/node_modules"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Highlight search matches
+set hlsearch
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings for moving lines and preserving indentation
+" http://vim.wikia.com/wiki/Moving_lines_up_or_down
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Toggle file drawer in/out
+nmap ,n :NERDTreeFind<CR>
+nmap ,m :NERDTreeToggle<CR>
+
+" Treat mdx as md
+autocmd BufNewFile,BufRead *.mdx set syntax=markdown
+
+" clear search with shift+enter
+nnoremap <S-CR> :noh<CR>
+
+" Prettier
+nnoremap = :Prettier<CR>
+
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 
