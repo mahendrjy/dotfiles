@@ -42,4 +42,5 @@ export PKG=(
   fzf
   autojump
   httrack
+  scrot
 )

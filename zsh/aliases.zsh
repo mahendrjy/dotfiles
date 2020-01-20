@@ -102,3 +102,12 @@ alias dcc="docker commit -c"
 
 # Git
 alias gs="git status"
+
+# Scrot
+alias s="scrot"
+
+# Youtube DL
+alias ydl="youtube-dl"
+alias ydlb="youtube-dl -f bestvideo+bestaudio"
+alias ydlbd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
+alias ydd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
