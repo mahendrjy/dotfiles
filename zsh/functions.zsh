@@ -100,4 +100,5 @@ function ranger-cd() {
 }
 
 function cra() { cp -R ~/.crapp "$@"; }
+function crat() { cp -R ~/.crappt "$@"; }
 function cga() { cp -R ~/.gapp "$@"; }
