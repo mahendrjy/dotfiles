@@ -25,6 +25,7 @@ if ! zgen saved; then
   zgen load zsh-users/zsh-autosuggestions
   zgen load fdw/ranger_autojump
   zgen load djui/alias-tips
+  zgen load lukechilds/zsh-better-npm-completion
 
   # completions
   zgen load zsh-users/zsh-completions src
