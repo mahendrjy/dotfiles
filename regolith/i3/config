@@ -19,6 +19,9 @@ set $browser_path /usr/bin/google-chrome
 # path to editor. Override this to specify a custom editor.
 set $editor_path /snap/bin/code
 
+# start a code editor
+bindsym $mod+Ctrl+Shift+Return exec $editor_path
+
 # Color values are defined in ~/.Xresources-regolith
 # These are the labels which define each i3 workspace.
 set_from_resource $ws1  i3-wm.workspace.01.name "1"
@@ -206,8 +209,8 @@ bindsym $mod+Shift+n exec nautilus
 bindsym $mod+n exec /usr/share/rofication/rofication-gui.py
 
 # i3-snapshot for load/save current layout
-bindsym $mod+comma  exec /usr/bin/i3-snapshot -o > /tmp/i3-snapshot
-bindsym $mod+period exec /usr/bin/i3-snapshot -c < /tmp/i3-snapshot
+bindsym $mod+bracketleft  exec /usr/bin/i3-snapshot -o > /tmp/i3-snapshot
+bindsym $mod+bracketright exec /usr/bin/i3-snapshot -c < /tmp/i3-snapshot
 
 # Toggle bar visibility
 bindsym $mod+i bar mode toggle
@@ -273,18 +276,18 @@ gaps inner 10
 gaps outer 0
 
 # change inner gaps interactively
-bindsym $mod+minus gaps inner current minus 6
-bindsym $mod+plus gaps inner current plus 6
+bindsym $mod+minus gaps inner current minus 5
+bindsym $mod+plus gaps inner current plus 5
 
 # change outer gaps interactively
-bindsym $mod+Shift+minus gaps outer current minus 6
-bindsym $mod+Shift+plus gaps outer current plus 6
+bindsym $mod+Shift+minus gaps outer current minus 5
+bindsym $mod+Shift+plus gaps outer current plus 5
 
 # reset gaps
-bindsym $mod+greater gaps inner current set 10; gaps outer current set 0
+bindsym $mod+period gaps inner current set 10; gaps outer current set 0
 
 # no gaps
-bindsym $mod+less gaps inner current set 0; gaps outer current set 0
+bindsym $mod+comma gaps inner current set 0; gaps outer current set 0
 
 # Only enable gaps on a workspace when there is at least one container
 smart_gaps on
@@ -334,7 +337,8 @@ set $color_green    #c3e88d
 
 # Window Border color
 # class                 border                             background                         text                               indicator                          child_border
-client.focused          $focused.color.border              $focused.color.background          $focused.color.text                $focused.color.indicator           $focused.color.child_border
+# client.focused          $focused.color.border              $focused.color.background          $focused.color.text                $focused.color.indicator           $focused.color.child_border
+client.focused          $focused.color.border              $color_base1          $focused.color.text                $focused.color.indicator           $focused.color.child_border
 client.focused_inactive $focused_inactive.color.border     $focused_inactive.color.background $focused_inactive.color.text       $focused_inactive.color.indicator  $focused_inactive.color.child_border
 client.unfocused        $unfocused.color.border            $unfocused.color.background        $unfocused.color.text              $unfocused.color.indicator         $unfocused.color.child_border
 client.urgent           $urgent.color.border               $urgent.color.background           $urgent.color.text                 $urgent.color.indicator            $urgent.color.child_border
