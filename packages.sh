@@ -11,7 +11,7 @@ export PKG=(
   toilet
   lolcat
   figlet
-  vlc
+  # vlc
   transmission
   ffmpeg
   htop
@@ -43,4 +43,6 @@ export PKG=(
   autojump
   httrack
   scrot
+  hub
+  uget
 )

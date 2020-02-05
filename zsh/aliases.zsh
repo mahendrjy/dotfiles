@@ -111,3 +111,6 @@ alias ydl="youtube-dl"
 alias ydlb="youtube-dl -f bestvideo+bestaudio"
 alias ydlbd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
 alias ydd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
+
+alias postgres="sudo -u postgres"
+alias pg="sudo -u postgres"
