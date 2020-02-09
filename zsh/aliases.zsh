@@ -7,8 +7,6 @@ alias vim="nvim"
 alias n="npm"
 alias r="ranger"
 
-alias git="hub"
-
 alias pls=please
 
 alias mk=make
@@ -25,6 +23,7 @@ alias vi=vim
 
 alias c="code"
 alias cr="code -r"
+alias cr.="code -r ."
 
 alias r=ranger-cd
 alias vm="vifm ."
@@ -69,8 +68,6 @@ alias flush-npm="rm -rf node_modules && npm i && say NPM is done"
 alias nicache="npm install --prefer-offline"
 alias nioff="npm install --offline"
 
-alias agi="add-gitignore"
-
 alias d='ddgr'
 alias wi="wikit"
 alias lc="lolcat"
@@ -86,7 +83,11 @@ alias ....="cd ../../../.."
 # Docker
 alias d="docker"
 alias dr="docker run"
+alias drrm="docker run --rm"
 alias drit="docker run -it"
+alias dritrm="docker run -it --rm"
+alias dritirm="docker run -it --init --rm"
+alias dritrmn="docker run -it --rm --name"
 alias dc="docker create"
 alias ds="docker start"
 alias dl="docker logs"
@@ -99,9 +100,23 @@ alias dsp="docker system prune"
 alias deit="docker exec -it"
 alias db="docker build"
 alias dcc="docker commit -c"
+alias de="docker exec"
+alias dbt="docker build --tag"
+alias dcp="docker container prune"
+alias dils="docker image ls"
 
 # Git
+alias git="hub"
 alias gs="git status"
+alias gc="git clone"
+alias agi="add-gitignore"
+
+# Heroku
+alias gphm="git push heroku master"
+
+# Yarn
+alias ys="yarn server"
+alias ysr="yarn server"
 
 # Scrot
 alias s="scrot"

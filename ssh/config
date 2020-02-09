@@ -1,4 +1,5 @@
 Host *
     Hostname github.com
-    User git
-    IdentityFile ~/.ssh/custom_id_rsa
+    User iampika
+    StrictHostKeyChecking  no
+    IdentityFile ~/.ssh/id_rsa

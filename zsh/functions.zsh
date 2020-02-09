@@ -10,20 +10,22 @@ function git-ignore() {
   curl -L -s https://www.gitignore.io/api/$@
 }
 
-function mkcd() {
-  mkdir -p $@
-  cd $@
+function mkcd () {
+  case "$1" in
+    */..|*/../) cd -- "$1";; # that doesn't make any sense unless the directory already exists
+    /*/../*) (cd "${1%/../*}/.." && mkdir -p "./${1##*/../}") && cd -- "$1";;
+    /*) mkdir -p "$1" && cd "$1";;
+    */../*) (cd "./${1%/../*}/.." && mkdir -p "./${1##*/../}") && cd "./$1";;
+    ../*) (cd .. && mkdir -p "${1#.}") && cd "$1";;
+    *) mkdir -p "./$1" && cd "./$1";;
+  esac
 }
+
+alias md="mkcd"
 
 function open() {
   xdg-open $@ &
   disown
-}
-
-function coding() {
-  local PROJECT=$(ls $1 | fzf)
-
-  tmuxinator start code "$1/$PROJECT"
 }
 
 function find-file() {
@@ -40,8 +42,10 @@ function please() {
 }
 
 function weather() {
-  curl 'wttr.in/~'${1:-Braga}'+'$2'?'${3:-0}
+  curl 'wttr.in/~'${1:-Parbatsar}'+'$2'?'${3:-0}
 }
+
+alias m="weather"
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select() {
