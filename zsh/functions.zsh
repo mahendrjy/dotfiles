@@ -7,8 +7,10 @@ function backup() {
 }
 
 function git-ignore() {
-  curl -L -s https://www.gitignore.io/api/$@
+  curl -L -s https://www.gitignore.io/api/$@ | xclip -sel clip
 }
+
+alias gi="git-ignore"
 
 function mkcd () {
   case "$1" in
@@ -103,7 +105,12 @@ function ranger-cd() {
   rm -f -- "$tempfile"
 }
 
-function cra() { cp -R ~/.crapp "$@"; }
-function crat() { cp -R ~/.crappt "$@"; }
-function cga() { cp -R ~/.gapp "$@"; }
-function csa() { cp -R ~/.server "$@"; }
+function cra() { cp -R ~/.rapp "$@"; cd "$@" }
+function crat() { cp -R ~/.rappt "$@"; cd "$@" }
+function cga() { cp -R ~/.gapp "$@"; cd "$@" }
+function csa() { cp -R ~/.sapp "$@"; cd "$@" }
+function csat() { cp -R ~/.sappt "$@"; cd "$@" }
+
+gccd() {
+  git clone "$1" && cd "$(basename "$1" .git)"
+}

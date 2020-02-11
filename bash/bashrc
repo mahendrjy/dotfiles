@@ -1,3 +1,102 @@
+# Path to your oh-my-bash installation.
+export OSH=$HOME/.oh-my-bash
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-bash is loaded.
+OSH_THEME="purity"
+
+completions=(
+  git
+  composer
+  ssh
+)
+
+aliases=(
+  general
+)
+
+plugins=(
+  git
+  bashmarks
+)
+
+source $OSH/oh-my-bash.sh
+
+# Vim for life
+export EDITOR=vim
+
+ENABLE_CORRECTION="true"
+export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+# Overcoming Muscle Memory
+if type nvim >/dev/null 2>&1; then
+  alias vim='nvim'
+fi
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+
+export PATH="$(yarn global bin):$PATH"
+
+# FUNCTIONS
+
+function mkcd () {
+  case "$1" in
+    */..|*/../) cd -- "$1";; # that doesn't make any sense unless the directory already exists
+    /*/../*) (cd "${1%/../*}/.." && mkdir -p "./${1##*/../}") && cd -- "$1";;
+    /*) mkdir -p "$1" && cd "$1";;
+    */../*) (cd "./${1%/../*}/.." && mkdir -p "./${1##*/../}") && cd "./$1";;
+    ../*) (cd .. && mkdir -p "${1#.}") && cd "$1";;
+    *) mkdir -p "./$1" && cd "./$1";;
+  esac
+}
+
+alias md="mkcd"
+
+function please() {
+  local CMD=$(history -1 | cut -d" " -f4-)
+  sudo "$CMD"
+}
+
+function weather() {
+  curl 'wttr.in/~'${1:-Parbatsar}'+'$2'?'${3:-0}
+}
+
+alias m="weather"
+
+shorten() { node ~/code/pika.im/node_modules/.bin/netlify-shortener "$1" "$2"; }
+killport() { lsof -i tcp:"$*" | awk 'NR!=1 {print $2}' | xargs kill -9; }
+
+fig() { figlet "$@" | lolcat; }
+tm() { toilet -f mono12 "$@" | lolcat; }
+tf() { toilet -f future "$@" | lolcat; }
+tb() { toilet -f bigmono12 "$@" | lolcat; }
+
+function ranger-cd() {
+  tempfile="$(mktemp -t tmp.XXXXXX)"
+  ranger --choosedir="$tempfile" "${@:-$(pwd)}"
+  test -f "$tempfile" &&
+    if [ "$(cat -- "$tempfile")" != "$(echo -n $(pwd))" ]; then
+      cd -- "$(cat "$tempfile")"
+    fi
+  rm -f -- "$tempfile"
+}
+
+gccd() {
+  git clone "$1" && cd "$(basename "$1" .git)"
+}
+
 # ALIASES
 
 alias c="coding $HOME/Code"
@@ -131,3 +230,11 @@ alias postgres="sudo -u postgres"
 alias pg="sudo -u postgres"
 
 alias todo="vim ~/.todo.txt"
+
+alias y="yarn"
+alias ya="yarn add"
+alias yad="yarn add --dev"
+alias yga="yarn global add"
+alias yst="yarn start"
+alias yt="yarn test"
+alias yb="yarn build"
