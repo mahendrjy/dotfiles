@@ -216,6 +216,7 @@ alias gphm="git push heroku master"
 # Yarn
 alias ys="yarn server"
 alias ysr="yarn server"
+alias yd="yarn dev"
 
 # Scrot
 alias s="scrot"

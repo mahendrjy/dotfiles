@@ -114,3 +114,5 @@ function csat() { cp -R ~/.sappt "$@"; cd "$@" }
 gccd() {
   git clone "$1" && cd "$(basename "$1" .git)"
 }
+
+alias gc="gccd"

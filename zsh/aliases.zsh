@@ -108,7 +108,6 @@ alias dils="docker image ls"
 # Git
 alias git="hub"
 alias gs="git status"
-alias gc="git clone"
 alias agi="add-gitignore"
 
 # Heroku
@@ -127,7 +126,9 @@ alias ydlb="youtube-dl -f bestvideo+bestaudio"
 alias ydlbd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
 alias ydd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
 
-alias postgres="sudo -u postgres"
-alias pg="sudo -u postgres"
+alias pg="sudo -i -u postgres"
+alias createdb="sudo -i -u postgres createdb"
+alias dropdb="sudo -i -u postgres dropdb"
+alias psql="sudo -i -u postgres psql"
 
 alias todo="vim ~/.todo.txt"
