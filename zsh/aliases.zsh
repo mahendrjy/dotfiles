@@ -100,9 +100,7 @@ alias dsp="docker system prune"
 alias deit="docker exec -it"
 alias db="docker build"
 alias dcc="docker commit -c"
-alias de="docker exec"
-alias dbt="docker build --tag"
-alias dcp="docker container prune"
+alias de="docker exec" alias dbt="docker build --tag" alias dcp="docker container prune"
 alias dils="docker image ls"
 
 # Git
@@ -116,6 +114,7 @@ alias gphm="git push heroku master"
 # Yarn
 alias ys="yarn server"
 alias ysr="yarn server"
+alias yrw="yarn run watch"
 
 # Scrot
 alias s="scrot"
@@ -125,6 +124,8 @@ alias ydl="youtube-dl"
 alias ydlb="youtube-dl -f bestvideo+bestaudio"
 alias ydlbd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
 alias ydd="youtube-dl -f bestvideo+bestaudio -ci --batch-file=download.txt"
+alias ydla="youtube-dl -cio '0%(autonumber)s %(title)s.%(ext)s' -f bestvideo+bestaudio -ci --batch-file=download.txt ; rename 's/000//g' *"
+alias ydlas="youtube-dl -cio '0%(autonumber)s %(title)s.%(ext)s' -f bestvideo+bestaudio -ci --write-auto-sub --batch-file=download.txt ; rename 's/000//g' *"
 
 alias pg="sudo -i -u postgres"
 alias createdb="sudo -i -u postgres createdb"
