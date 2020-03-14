@@ -7,11 +7,9 @@ export PKG=(
   git
   neovim
   ranger
-  vifm
   toilet
   lolcat
   figlet
-  # vlc
   transmission
   ffmpeg
   htop
@@ -19,7 +17,6 @@ export PKG=(
   tree
   nethogs
   variety
-  exa
   kitty
   devilspie
   python-chardet
@@ -32,7 +29,6 @@ export PKG=(
   highlight
   bsdtar
   w3m
-  nodejs
   ddgr
   xclip
   linuxbrew-wrapper

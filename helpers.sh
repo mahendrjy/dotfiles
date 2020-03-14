@@ -31,7 +31,7 @@ function _install() {
     for pkg in "${PKG[@]}"; do
       echo_info "Installing ${pkg}..."
       if ! [ -x "$(command -v rainbow)" ]; then
-        sudo "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}"
+        sudo "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}" yes
       else
         rainbow --red=error --yellow=warning sudo "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}"
       fi
