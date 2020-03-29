@@ -5,9 +5,10 @@
 # shellcheck source=helpers.sh
 . ../helpers.sh
 
-echo_info "Configuring Nvim..."
-_install nvim
+echo_info "Installing Nvim..."
+sudo apt install neovim
 
+echo_info "Configuring Nvim..."
 mkdir -p ${HOME}/.config/nvim
 
 echo_info "Symlink init.vim..."

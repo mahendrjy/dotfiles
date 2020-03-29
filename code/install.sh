@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring vscode..."
-_install code
-
 echo_info "Installing vscode..."
 sudo snap install --classic code
 

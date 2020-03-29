@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring musixmatch..."
-_install musixmatch
-
 echo_info "Installing musixmatch..."
 sudo snap install musixmatch
 

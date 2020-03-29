@@ -5,9 +5,10 @@
 # shellcheck source=helpers.sh
 . ../helpers.sh
 
-echo_info "Configuring Devilspie..."
-_install devilspie
+echo_info "Installing Devilspie..."
+sudo apt install devilspie
 
+echo_info "Configuring Devilspie..."
 mkdir -p ${HOME}/.devilspie
 
 echo_info "Symlink kitty_transparent.ds.."

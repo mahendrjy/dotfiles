@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring insomnia..."
-_install insomnia
-
 echo_info "Installing insomnia..."
 # Add to sources
 echo "deb https://dl.bintray.com/getinsomnia/Insomnia /" \

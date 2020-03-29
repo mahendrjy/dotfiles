@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring Node..."
-_install node
-
 echo_info "Installing Node.js"
 
 npm i -g add-gitignore

@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring postgresql..."
-_install postgresql
-
 echo_info "Installing postgresql..."
 sudo apt-get install postgresql postgresql-contrib
 

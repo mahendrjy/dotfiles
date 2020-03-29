@@ -3,10 +3,7 @@
 export PKG=(
   curl
   wget
-  zsh
   git
-  neovim
-  ranger
   toilet
   lolcat
   figlet
@@ -16,9 +13,6 @@ export PKG=(
   neofetch
   tree
   nethogs
-  variety
-  kitty
-  devilspie
   python-chardet
   ffmpegthumbnailer
   python3
@@ -41,4 +35,6 @@ export PKG=(
   scrot
   hub
   uget
+  mpv
+  torbrowser-launcher
 )

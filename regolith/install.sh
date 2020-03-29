@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring Regolith..."
-_install regolith
-
 mkdir -p ${HOME}/.config/regolith/i3
 
 echo_info "Symlink config..."

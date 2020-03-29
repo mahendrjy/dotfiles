@@ -6,8 +6,6 @@
 . ../helpers.sh
 
 echo_info "Configuring Xresources.d..."
-_install Xresources.d
-
 mkdir -p ${HOME}/.Xresources.d
 
 echo_info "Symlink color-palenight..."

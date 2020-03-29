@@ -8,8 +8,6 @@ email="jakepintu@gmail.com"
 . ../helpers.sh
 
 echo_info "Configuring SSH..."
-_install ssh
-
 mkdir -p ${HOME}/.ssh
 
 # How to Setup SSH Keys on GitHub

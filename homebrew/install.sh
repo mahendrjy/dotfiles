@@ -6,16 +6,12 @@
 . ../helpers.sh
 
 echo_info "Configuring homebrew..."
-_install homebrew
-
 echo_info "Installing homebrew pkgs..."
 PKGS=(
   yarn
   exa
   youtube-dl
   nvm
-  docker
-  docker-compose
 )
 
 
