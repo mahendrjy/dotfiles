@@ -10,7 +10,6 @@ echo_info "Installing homebrew pkgs..."
 PKGS=(
   yarn
   exa
-  youtube-dl
   nvm
 )
 

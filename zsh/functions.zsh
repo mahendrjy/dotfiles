@@ -93,7 +93,7 @@ killport() { lsof -i tcp:"$*" | awk 'NR!=1 {print $2}' | xargs kill -9; }
 fig() { figlet "$@" | lolcat; }
 tm() { toilet -f mono12 "$@" | lolcat; }
 tf() { toilet -f future "$@" | lolcat; }
-tb() { toilet -f bigmono12 "$@" | lolcat; }
+tbg() { toilet -f bigmono12 "$@" | lolcat; }
 
 function ranger-cd() {
   tempfile="$(mktemp -t tmp.XXXXXX)"

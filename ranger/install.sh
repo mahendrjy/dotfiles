@@ -9,8 +9,6 @@ echo_info "Installing Ranger..."
 sudo apt install ranger
 
 echo_info "Configuring Ranger..."
-mkdir -p ${HOME}/.config/ranger/plugins
-
 echo_info "Symlink rc.conf..."
 ln -sfT "${HOME}/dotfiles/ranger/rc.conf" "${HOME}/.config/ranger/rc.conf"
 
