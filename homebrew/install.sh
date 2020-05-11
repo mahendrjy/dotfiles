@@ -7,6 +7,13 @@
 
 echo_info "Configuring homebrew..."
 echo_info "Installing homebrew pkgs..."
+
+sudo apt-get install build-essential curl file git
+git clone https://github.com/Homebrew/brew ~/.linuxbrew/Homebrew
+mkdir ~/.linuxbrew/bin
+ln -s ~/.linuxbrew/Homebrew/bin/brew ~/.linuxbrew/bin
+eval $(~/.linuxbrew/bin/brew shellenv)
+
 PKGS=(
   yarn
   exa
