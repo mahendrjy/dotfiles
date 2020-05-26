@@ -25,7 +25,6 @@ export PKG=(
   w3m
   ddgr
   xclip
-  linuxbrew-wrapper
   atool
   poppler-utils
   mediainfo

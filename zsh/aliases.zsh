@@ -135,3 +135,6 @@ alias psql="sudo -i -u postgres psql"
 alias todo="vim ~/.todo.txt"
 
 alias tb="taskbook"
+
+alias mongo="docker run --name mongodb -v -d --rm -p 27017:27017 mongo"
+alias redis="docker run --name redis -v -d --rm -p 6379:6379 redis"
