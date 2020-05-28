@@ -16,6 +16,6 @@ sudo cp -a Dank\ Mono/. ${HOME}/.local/share/fonts
 
 sudo fc-cache -f -v
 
-#sudo apt-get install fonts-emojione
+sudo apt-get install fonts-emojione
 
 echo_done "fonts configuration!"

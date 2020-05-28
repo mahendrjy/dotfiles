@@ -537,6 +537,8 @@ bar {
   status_command $i3-wm.bar.status_command
   tray_output $i3-wm.bar.trayoutput
   strip_workspace_numbers $i3-wm.bar.stripworkspacenumbers
+  mode hide
+  modifier Mod4+Mod1
 
   colors {
       background $i3-wm.bar.background.color
@@ -583,3 +585,6 @@ exec --no-startup-id $i3-wm.program.3
 
 # Launch Devilspie
 exec_always --no-startup-id devilspie
+
+# Launch Variety
+exec_always --no-startup-id variety
