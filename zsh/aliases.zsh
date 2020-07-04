@@ -113,7 +113,6 @@ alias gphm="git push heroku master"
 
 # Yarn
 alias ys="yarn server"
-alias ysr="yarn server"
 alias yrw="yarn run watch"
 
 # Scrot
@@ -136,5 +135,8 @@ alias todo="vim ~/.todo.txt"
 
 alias tb="taskbook"
 
-alias mongo="docker run --name mongodb -v -d --rm -p 27017:27017 mongo"
-alias redis="docker run --name redis -v -d --rm -p 6379:6379 redis"
+# https://medium.com/better-programming/persistent-databases-using-dockers-volumes-and-mongodb-9ac284c25b39
+alias mongo="docker run --name mongodb -v /data/mongodb -d -p 27017:27017 mongo; dc start mongodb"
+alias redis="docker run --name redisdb -v /data/redisdb -d -p 6379:6379 redis; dc start redisdb"
+
+alias lst="lite-server"

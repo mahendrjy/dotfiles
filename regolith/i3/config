@@ -585,6 +585,3 @@ exec --no-startup-id $i3-wm.program.3
 
 # Launch Devilspie
 exec_always --no-startup-id devilspie
-
-# Launch Variety
-exec_always --no-startup-id variety
