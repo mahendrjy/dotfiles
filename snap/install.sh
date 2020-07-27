@@ -19,6 +19,7 @@ PKGS=(
   youtube-dl # Download videos from youtube.com or other video platforms.
   gitkraken # For repo management, in-app code editing & issue tracking.
   docker # Docker container runtime.
+  robo3t-snap # Robo 3T (formerly Robomongo) is the free lightweight GUI for MongoDB enthusiasts.
 )
 
 for pkg in "${PKGS[@]}"; do

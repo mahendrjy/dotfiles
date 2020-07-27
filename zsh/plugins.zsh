@@ -1,7 +1,7 @@
-# load zgen
 source "${HOME}/.zgen/zgen.zsh"
 
 # if the init scipt doesn't exist
+# load zgen
 if ! zgen saved; then
   echo "Creating a zgen save"
   zgen oh-my-zsh
@@ -12,12 +12,8 @@ if ! zgen saved; then
   zgen oh-my-zsh plugins/command-not-found
   zgen oh-my-zsh plugins/fasd
   zgen oh-my-zsh plugins/yarn
-  zgen oh-my-zsh plugins/web-search
-  zgen oh-my-zsh plugins/ubuntu
   zgen oh-my-zsh plugins/nvm
   zgen oh-my-zsh plugins/npm
-  zgen oh-my-zsh plugins/docker
-  zgen oh-my-zsh plugins/docker-compose
   zgen oh-my-zsh plugins/copyfile
   zgen oh-my-zsh plugins/copydir
   zgen load zsh-users/zsh-syntax-highlighting
@@ -43,36 +39,35 @@ SPACESHIP_PROMPT_ORDER=(
   dir       # Current directory section
   host      # Hostname section
   git       # Git section (git_branch + git_status)
-  hg        # Mercurial section (hg_branch  + hg_status)
+  # hg        # Mercurial section (hg_branch  + hg_status)
   package   # Package version
   node      # Node.js section
-  ruby      # Ruby section
-  elixir    # Elixir section
-  xcode     # Xcode section
-  swift     # Swift section
-  golang    # Go section
-  php       # PHP section
-  rust      # Rust section
-  haskell   # Haskell Stack section
-  julia     # Julia section
-  docker    # Docker section
-  aws       # Amazon Web Services section
-  venv      # virtualenv section
-  conda     # conda virtualenv section
-  pyenv     # Pyenv section
-  dotnet    # .NET section
-  ember     # Ember.js section
-  kubectl   # Kubectl context section
-  terraform # Terraform workspace section
-  exec_time # Execution time
-  line_sep  # Line break
+  # ruby      # Ruby section
+  # elixir    # Elixir section
+  # xcode     # Xcode section
+  # swift     # Swift section
+  # golang    # Go section
+  # php       # PHP section
+  # rust      # Rust section
+  # haskell   # Haskell Stack section
+  # julia     # Julia section
+  # docker    # Docker section
+  # aws       # Amazon Web Services section
+  # venv      # virtualenv section
+  # conda     # conda virtualenv section
+  # pyenv     # Pyenv section
+  # dotnet    # .NET section
+  # ember     # Ember.js section
+  # kubectl   # Kubectl context section
+  # terraform # Terraform workspace section
+  # exec_time # Execution time
+  # line_sep  # Line break
   battery   # Battery level and status
-  # vi_mode       # Vi-mode indicator
-  jobs      # Background jobs indicator
-  exit_code # Exit code section
+  # vi_mode   # Vi-mode indicator
+  # jobs      # Background jobs indicator
+  # exit_code # Exit code section
   char      # Prompt character
 )
-
 function random_element() {
   declare -a array=("$@")
   r=$((RANDOM % ${#array[@]}))

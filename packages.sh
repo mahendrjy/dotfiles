@@ -3,7 +3,6 @@
 export PKG=(
   curl
   wget
-  git
   toilet
   lolcat
   figlet

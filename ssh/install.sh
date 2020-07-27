@@ -1,6 +1,6 @@
 #!/bin/bash
 
-email="jakepintu@gmail.com"
+email="pikaatic@gmail.com"
 
 # shellcheck source=distro.sh
 . ../distro.sh
