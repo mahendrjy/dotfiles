@@ -132,6 +132,7 @@ alias dropdb="sudo -i -u postgres dropdb"
 alias psql="sudo -i -u postgres psql"
 
 alias todo="vim ~/.todo.txt"
+alias project="vim ~/.project.txt"
 alias notes="vim ~/.notes.txt"
 
 alias tb="taskbook"
