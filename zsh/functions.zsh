@@ -107,9 +107,18 @@ function ranger-cd() {
 
 function cra() { cp -R ~/.rapp "$@"; cd "$@" }
 function crat() { cp -R ~/.rappt "$@"; cd "$@" }
+function cna() { cp -R ~/.napp "$@"; cd "$@" }
+function cnat() { cp -R ~/.nappt "$@"; cd "$@" }
 function cga() { cp -R ~/.gapp "$@"; cd "$@" }
 function csa() { cp -R ~/.sapp "$@"; cd "$@" }
 function csat() { cp -R ~/.sappt "$@"; cd "$@" }
+function csat() { cp -R ~/.sappt "$@"; cd "$@" }
+function 3000() { curl http://localhost:3000/"$@"  }
+function 3001() { curl http://localhost:3001/"$@"  }
+function 4000() { curl http://localhost:4000/"$@"  }
+function 3000i() { curl http://localhost:3000/"$@" --include  }
+function 3001i() { curl http://localhost:3001/"$@" --include  }
+function 4000i() { curl http://localhost:4000/"$@" --include  }
 
 gccd() {
   git clone "$1" && cd "$(basename "$1" .git)"
