@@ -57,14 +57,19 @@ alias vn="vim ~/.config/nvim/init.vim"
 alias vr="vim ~/.config/ranger/rc.conf"
 
 alias ni="npm install"
-alias nrs="npm run start -s --"
-alias nrb="npm run build -s --"
-alias nrd="npm run dev -s --"
-alias nrt="npm run test -s --"
-alias nrtw="npm run test:watch -s --"
-alias nrv="npm run validate -s --"
-alias rmn="rm -rf node_modules"
-alias flush-npm="rm -rf node_modules && npm i && say NPM is done"
+alias nid="npm install -D"
+alias nst="npm run start -s --"
+alias ns="npm run server -s --"
+alias nb="npm run build -s --"
+alias nf="npm fund -s --"
+alias nd="npm run dev -s --"
+alias nt="npm run test -s --"
+alias ntw="npm run test:watch -s --"
+alias nv="npm run validate -s --"
+alias na="npm audit"
+alias naf="npm audit fix"
+alias nr="rm -rf node_modules"
+alias flush="rm -rf node_modules && npm i && say NPM is done"
 alias nicache="npm install --prefer-offline"
 alias nioff="npm install --offline"
 
@@ -142,3 +147,10 @@ alias mongo="sudo docker run --name mongodb -v /data/mongodb -d -p 27017:27017 m
 alias redis="sudo docker run --name redisdb -v /data/redisdb -d -p 6379:6379 redis; dc start redisdb"
 
 alias lst="lite-server"
+
+# no-internet
+alias no-internet="sudo -g no-internet"
+alias noi="sudo -g no-internet"
+
+# open spotify with no internet
+alias s="sudo -g no-internet spotify"
