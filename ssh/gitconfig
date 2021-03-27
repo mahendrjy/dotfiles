@@ -1,0 +1,5 @@
+[user]
+    name = Mahendra Choudhary
+    email = pikaatic@gmail.com
+[includeIf "gitdir:~/work/"]
+    path = ~/work/.gitconfig
