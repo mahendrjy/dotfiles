@@ -1,6 +1,7 @@
 #!/bin/bash
 
-email="pikaatic@gmail.com"
+personal_email="pikaatic@gmail.com"
+work_email="mahendra.choudhary@egovernments.org"
 
 # shellcheck source=distro.sh
 . ../distro.sh
@@ -9,16 +10,26 @@ email="pikaatic@gmail.com"
 
 echo_info "Configuring SSH..."
 mkdir -p ${HOME}/.ssh
+mkdir -p ${HOME}/work
 
 # How to Setup SSH Keys on GitHub
 # https://devconnected.com/how-to-setup-ssh-keys-on-github/
 echo_info "Generating an RSA token for GitHub"
-ssh-keygen -t rsa -b 4096 -C ${email}
-cat ~/.ssh/id_rsa.pub
-xclip -sel clip <~/.ssh/id_rsa.pub
-echo_info "Add SSH key to your GitHub Account"
+echo_info "Personal - id_rsa_personal"
+echo_info "Work - id_rsa_work"
+ssh-keygen -t rsa -b 4096 -C ${personal_email}
+ssh-keygen -t rsa -b 4096 -C ${work_email}
 
 echo_info "Symlink config..."
 ln -sfT "$HOME/dotfiles/ssh/config" "$HOME/.ssh/config"
+ln -sfT "$HOME/dotfiles/ssh/gitconfig" "$HOME/.gitconfig"
+ln -sfT "$HOME/dotfiles/ssh/work-gitconfig" "$HOME/work/.gitconfig"
+
+echo_info "Add SSH key to your GitHub Account"
+echo_info "Copy id_rsa_personal.pub and id_rsa_work.pub and add to respective github account."
+echo_info "ssh -T github.com-personal"
+echo_info "ssh -T github.com-work"
+echo_info "Always clone repo by adding hostname in remote url"
+echo_info "e.g. git@github.com to git@github.com-pika"
 
 echo_done "SSH configuration!"
