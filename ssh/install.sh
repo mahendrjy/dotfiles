@@ -11,6 +11,7 @@ work_email="mahendra.choudhary@egovernments.org"
 echo_info "Configuring SSH..."
 mkdir -p ${HOME}/.ssh
 mkdir -p ${HOME}/work
+cd ${HOME}/.ssh
 
 # How to Setup SSH Keys on GitHub
 # https://devconnected.com/how-to-setup-ssh-keys-on-github/
@@ -27,9 +28,11 @@ ln -sfT "$HOME/dotfiles/ssh/work-gitconfig" "$HOME/work/.gitconfig"
 
 echo_info "Add SSH key to your GitHub Account"
 echo_info "Copy id_rsa_personal.pub and id_rsa_work.pub and add to respective github account."
-echo_info "ssh -T github.com-personal"
+echo_info "ssh -T github.com-pika"
 echo_info "ssh -T github.com-work"
 echo_info "Always clone repo by adding hostname in remote url"
 echo_info "e.g. git@github.com to git@github.com-pika"
 
 echo_done "SSH configuration!"
+
+cd ${HOME}/dotfiles/ssh
