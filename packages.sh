@@ -6,10 +6,8 @@ export PKG=(
   toilet
   lolcat
   figlet
-  transmission
   ffmpeg
   htop
-  neofetch
   tree
   nethogs
   python-chardet
@@ -33,7 +31,4 @@ export PKG=(
   httrack
   scrot
   hub
-  uget
-  mpv
-  torbrowser-launcher
 )
