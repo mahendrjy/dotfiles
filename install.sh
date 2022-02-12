@@ -22,6 +22,3 @@ _install core
 # _update system
 
 _symlink
-
-echo_info "Changing shell..."
-chsh -s "$(command -v zsh)"
