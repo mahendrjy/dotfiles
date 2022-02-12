@@ -109,7 +109,6 @@ alias de="sudo docker exec" alias dbt="docker build --tag" alias dcp="docker con
 alias dils="sudo docker image ls"
 
 # Git
-alias git="hub"
 alias gs="git status"
 alias agi="add-gitignore"
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo -v
+
 function echo_error() {
   printf '\n\033[31mERROR:\033[0m %s\n' "$1"
 }
@@ -49,7 +51,7 @@ function _symlink() {
   for dir in $dirs; do
     echo "Installing ${dir}..."
     cd "$dir" || exit
-    ./install.sh
+    bash ./install.sh
     cd ..
   done
 }
