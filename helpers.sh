@@ -49,7 +49,7 @@ function _symlink() {
   for dir in $dirs; do
     echo "Installing ${dir}..."
     cd "$dir" || exit
-    ./install.sh
+    bash ./install.sh
     cd ..
   done
 }
