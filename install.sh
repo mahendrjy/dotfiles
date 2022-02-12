@@ -1,24 +1,10 @@
-#!/bin/bash
+PARENT_PATH=$(
+  cd "$(dirname "${BASH_SOURCE[0]}")"
+  pwd -P
+)
 
-sudo -v
+sudo apt-get install zsh
+sudo chsh -s $(which zsh)
 
-# Keep-alive: update existing `sudo` time stamp until `install` has finished
-while true; do
-  sudo -n true
-  sleep 60
-  kill -0 "$$" || exit
-done 2>/dev/null &
-
-echo "Hello $(whoami)! Let's get you set up."
-
-. distro.sh
-. packages.sh
-. helpers.sh
-
-# Install packages in the official repositories
-# echo_info "Installing core packages..."
-_install core
-
-# _update system
-
-_symlink
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+grep -q -F "source $PARENT_PATH/src/index.sh" $HOME/.zshrc || echo "source $PARENT_PATH/src/index.sh" >>~/.zshrc
