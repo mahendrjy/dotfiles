@@ -5,11 +5,6 @@
 # shellcheck source=helpers.sh
 . ../helpers.sh
 
-echo "RRRRRRRRRRRRRRRRRR"
-echo "RRRRRRRRRRRRRRRRRR"
-echo "RRRRRRRRRRRRRRRRRR"
-echo "RRRRRRRRRRRRRRRRRR"
-
 echo_info "Installing ZSH with OH-MY-ZSH..."
 sudo apt install zsh
 
