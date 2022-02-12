@@ -6,6 +6,6 @@ will not get the most out of it without.
 
 ## I have 3 dotfiles
 
-- [Codespaces dotfiles](#https://github.com/iampika/dotfiles/tree/master)
-- [Regolith Linux dotfiles](#https://github.com/iampika/dotfiles/tree/Regolith-Linux-dotfiles)
-- [WSL dotfiles](#https://github.com/iampika/dotfiles/tree/wsl)
+- [Codespaces dotfiles](https://github.com/iampika/dotfiles/tree/master)
+- [Regolith Linux dotfiles](https://github.com/iampika/dotfiles/tree/Regolith-Linux-dotfiles)
+- [WSL dotfiles](https://github.com/iampika/dotfiles/tree/wsl)
