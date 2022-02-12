@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+sudo -v
 
-echo_info "Installing ZSH with OH-MY-ZSH..."
-sudo apt install zsh
+# Keep-alive: update existing `sudo` time stamp until `install` has finished
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
 
-echo_info "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+echo "Hello $(whoami)! Let's get you set up."
 
-echo_info "Installing A lightweight and simple plugin manager for ZSH"
-git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+. distro.sh
+. packages.sh
+. helpers.sh
 
-echo_info "Symlink .zshrc..."
-ln -sft "${HOME}/dotfiles/zshrc" "${HOME}/.zshrc"
+# Install packages in the official repositories
+# echo_info "Installing core packages..."
+_install core
 
-echo_info "changing shell..."
-# chsh -s "$(command -v zsh)"
-sudo chsh -s $(which zsh) $(whoami)
+# _update system
 
-echo_done "ZSH configuration!"
+_symlink
