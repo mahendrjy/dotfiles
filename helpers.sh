@@ -53,4 +53,3 @@ function _symlink() {
     cd ..
   done
 }
-© 2022 GitHub, Inc.
