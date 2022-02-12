@@ -5,6 +5,11 @@
 # shellcheck source=helpers.sh
 . ../helpers.sh
 
+echo "RRRRRRRRRRRRRRRRRR"
+echo "RRRRRRRRRRRRRRRRRR"
+echo "RRRRRRRRRRRRRRRRRR"
+echo "RRRRRRRRRRRRRRRRRR"
+
 echo_info "Installing ZSH with OH-MY-ZSH..."
 sudo apt install zsh
 
@@ -18,6 +23,7 @@ echo_info "Symlink .zshrc..."
 ln -sft "${HOME}/dotfiles/zsh/zshrc" "${HOME}/.zshrc"
 
 echo_info "changing shell..."
-chsh -s "$(command -v zsh)"
+# chsh -s "$(command -v zsh)"
+sudo chsh -s $(which zsh) $(whoami)
 
 echo_done "ZSH configuration!"
