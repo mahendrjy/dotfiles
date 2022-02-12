@@ -3,6 +3,11 @@
 name="Mahendra Choudhary"
 email="pikaatic@gmail.com"
 
+# shellcheck source=distro.sh
+. ../distro.sh
+# shellcheck source=helpers.sh
+. ../helpers.sh
+
 echo_info "Configuring GIT..."
 mkdir -p ${HOME}/.git
 

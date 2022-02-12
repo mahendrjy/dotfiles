@@ -53,6 +53,7 @@ alias vz="vim ~/.zshrc"
 alias vza="vim ~/dotfiles/zsh/aliases.zsh"
 alias vzp="vim ~/dotfiles/zsh/plugins.zsh"
 alias vzf="vim ~/dotfiles/zsh/functions.zsh"
+alias vn="vim ~/.config/nvim/init.vim"
 alias vr="vim ~/.config/ranger/rc.conf"
 
 alias ni="npm install"

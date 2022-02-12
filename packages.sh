@@ -1,4 +1,39 @@
 #!/bin/bash
 
 export PKG=(
+  curl
+  wget
+  toilet
+  lolcat
+  figlet
+  transmission
+  ffmpeg
+  htop
+  neofetch
+  tree
+  nethogs
+  python-chardet
+  ffmpegthumbnailer
+  python
+  python3
+  python3-pip
+  python3-venv
+  pipenv
+  caca-utils
+  highlight
+  bsdtar
+  w3m
+  ddgr
+  xclip
+  atool
+  poppler-utils
+  mediainfo
+  fzf
+  autojump
+  httrack
+  scrot
+  hub
+  uget
+  mpv
+  torbrowser-launcher
 )
