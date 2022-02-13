@@ -8,16 +8,16 @@
 echo_info "Installing ZSH with OH-MY-ZSH..."
 
 echo_info "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 echo_info "Installing A lightweight and simple plugin manager for ZSH"
-git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+yes | git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 
 echo_info "Symlink .zshrc..."
-ln -sfT "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
+yes | ln -sfT "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
 
 echo_info "changing shell..."
 # chsh -s "$(command -v zsh)"
-sudo chsh -s $(which zsh) $(whoami)
+yes | sudo chsh -s $(which zsh) $(whoami)
 
 echo_done "ZSH configuration!"

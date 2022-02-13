@@ -7,8 +7,8 @@
 
 echo_info "Configuring Fasd..."
 echo_info "Installing fasd..."
-fasd sudo add-apt-repository ppa:aacebedo/fasd
-sudo apt-get update
-sudo apt-get install fasd
+yes | sudo add-apt-repository ppa:aacebedo/fasd
+yes | sudo apt-get update
+yes | sudo apt install fasd
 
 echo_done "Fasd configuration!"
