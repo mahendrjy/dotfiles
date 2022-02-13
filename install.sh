@@ -26,3 +26,5 @@ _symlink
 git clone https://github.com/iampika/dotfiles.git ~/dotfiles
 
 yes | sudo chsh -s $(which zsh) $(whoami)
+
+yes | zsh

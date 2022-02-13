@@ -38,10 +38,10 @@ alias pi="pip3"
 alias ve="virtualenv"
 
 # Changing "ls" to "exa"
-# alias l='exa --color=always --group-directories-first'      # some files and dirs
-# alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-# alias ll='exa -1 --color=always --group-directories-first'  # long format
-# alias ls='exa -a1 --color=always --group-directories-first' # my preferred listing
+alias l='exa --color=always --group-directories-first'      # some files and dirs
+alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+alias ll='exa -1 --color=always --group-directories-first'  # long format
+alias ls='exa -a1 --color=always --group-directories-first' # my preferred listing
 
 alias cp="cp -i" # confirm before overwriting something
 alias df='df -h' # human-readable sizes
