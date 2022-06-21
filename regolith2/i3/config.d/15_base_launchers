@@ -1,0 +1,14 @@
+###############################################################################
+# Launcher dialogs
+###############################################################################
+
+## Launch // Terminal // <> Enter ##
+set_from_resource $i3-wm.binding.terminal i3-wm.binding.terminal Return
+bindsym $mod+$i3-wm.binding.terminal exec --no-startup-id /usr/bin/kitty
+
+## Launch // Browser // <><Shift> Enter ##
+set_from_resource $i3-wm.binding.browser i3-wm.binding.browser Shift+Return
+bindsym $mod+$i3-wm.binding.browser exec --no-startup-id gtk-launch $(xdg-settings get default-web-browser)
+
+## Launch // Code Editor // <><Ctrl><Shift> Enter ##
+bindsym $mod+Ctrl+Shift+Return exec /snap/bin/code
