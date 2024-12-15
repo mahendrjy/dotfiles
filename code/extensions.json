@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "neotan.vscode-auto-restart-typescript-eslint-servers",
+    "alefragnani.Bookmarks",
+    "alefragnani.project-manager",
+    "vscodevim.vim",
+    "GitHub.copilot",
+    "GitHub.copilot-chat"
+  ]
+}
