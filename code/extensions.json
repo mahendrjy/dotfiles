@@ -7,6 +7,7 @@
     "alefragnani.project-manager",
     "vscodevim.vim",
     "GitHub.copilot",
-    "GitHub.copilot-chat"
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github"
   ]
 }
