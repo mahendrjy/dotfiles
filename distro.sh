@@ -1,7 +1,6 @@
 #!/bin/bash
-
-export PKGMN=apt    # Package Manager
-export PKGOPT=-y    # Confirm
+export PKGMN=brew   # Package Manager
+export PKGOPT=""    # Confirm (not needed for brew)
 export PKGU=update  # Updating Options
 export PKGI=install # Installation Options
 export PKGR=remove  # Remove Options
