@@ -19,10 +19,10 @@ function echo_info() {
 function _update() {
   if [[ $1 == "system" ]]; then
     echo_info "Updating system packages..."
-    sudo "$PKGMN" "$PKGU" "${PKGOPT[@]}"
+    "$PKGMN" "$PKGU" "${PKGOPT[@]}"
   else
     echo_info "Updating ${1}..."
-    sudo "$PKGMN" "$PKGI" "$1"
+    "$PKGMN" "$PKGI" "$1"
   fi
 }
 
@@ -31,15 +31,15 @@ function _install() {
     for pkg in "${PKG[@]}"; do
       echo_info "Installing ${pkg}..."
       if ! [ -x "$(command -v rainbow)" ]; then
-        sudo "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}" yes
+        "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}" yes
       else
-        rainbow --red=error --yellow=warning sudo "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}"
+        rainbow --red=error --yellow=warning "$PKGMN" "$PKGI" "$pkg" "${PKGOPT[@]}"
       fi
       echo_done "${pkg} installed!"
     done
   else
     echo_info "Intalling ${1}..."
-    sudo "$PKGMN" "$PKGI" "$1"
+    "$PKGMN" "$PKGI" "$1"
   fi
 }
 

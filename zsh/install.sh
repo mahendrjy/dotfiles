@@ -14,7 +14,7 @@ echo_info "Installing A lightweight and simple plugin manager for ZSH"
 yes | git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 
 echo_info "Symlink .zshrc..."
-yes | ln -sfT "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
+yes | ln -sf "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
 
 echo_info "changing shell..."
 # chsh -s "$(command -v zsh)"
