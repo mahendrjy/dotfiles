@@ -1,5 +1,5 @@
 [user]
     name = Mahendra Choudhary
-	email = mchoudhary@placelink.co
+	email = mahendrjy@gamil.com
 [includeIf "gitdir:~/work/"]
     path = ~/work/.gitconfig
