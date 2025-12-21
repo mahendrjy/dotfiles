@@ -1,0 +1,11 @@
+{
+    "enabled": true,
+    "show_on_question": true,
+    "show_on_answer": true,
+    "folder_name": "random_images",
+    "max_width_percent": 80,
+    "max_height_vh": 60,
+    "avoid_repeat": true,
+    "show_filename": true
+  }
+  
