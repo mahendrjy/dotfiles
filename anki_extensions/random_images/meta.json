@@ -1,1 +1,1 @@
-{"name": "Random Image", "mod": 1765841808, "min_point_version": 231000, "max_point_version": 231000, "branch_index": 0, "disabled": false}
+{"name": "Random Image", "mod": 1765841808, "min_point_version": 231000, "max_point_version": 231000, "branch_index": 0, "disabled": false, "config": {"enabled": true, "show_on_question": true, "show_on_answer": true, "folder_name": "random_images", "max_width_percent": 100, "max_height_vh": 80, "avoid_repeat": true, "show_filename": true}}

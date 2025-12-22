@@ -278,6 +278,40 @@ def open_settings_dialog(*args, **kwargs):
     dlg.exec()
 
 
+def delete_image_file(filename: str, cfg: dict) -> bool:
+    """Delete an image file and remove it from cycle state. Returns True if successful."""
+    global _cycle_known_set, _cycle_remaining, _cycle_state_path
+    try:
+        col = getattr(mw, "col", None)
+        if not col:
+            return False
+
+        folder_name = _sanitize_folder_name(cfg.get("folder_name", "random_images"))
+        image_folder = _media_subfolder_path(folder_name)
+        if not image_folder:
+            return False
+
+        # Build full path to the file
+        file_path = os.path.join(image_folder, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        # Remove from cycle state if it exists
+        if filename in _cycle_known_set:
+            _cycle_known_set.discard(filename)
+            if filename in _cycle_remaining:
+                _cycle_remaining.remove(filename)
+
+        # Save updated state
+        if _cycle_state_path:
+            _save_cycle_state(_cycle_state_path, _cycle_known_set, _cycle_remaining)
+
+        return True
+    except Exception as e:
+        print("[RandomImageAddon] Error deleting image:", e)
+        return False
+
+
 def pick_random_image_filename(cfg: dict):
     """Return a random filename from collection.media/<folder_name>/ (recurses subfolders)."""
     global _last_filename, _cycle_known_set, _cycle_remaining, _cycle_state_path
@@ -373,6 +407,7 @@ def inject_random_image(text: str, card, kind: str) -> str:
 
     # Hover tooltip: show original filename (escape for HTML attribute safety)
     title_attr = html.escape(filename, quote=True)
+    filename_escaped = html.escape(filename, quote=True)
 
     max_w = cfg.get("max_width_percent", 80)
     max_h = cfg.get("max_height_vh", 60)
@@ -400,10 +435,34 @@ def inject_random_image(text: str, card, kind: str) -> str:
   </div>
 """
 
+    delete_button_html = f"""
+  <button 
+    onclick="deleteRandomImage('{filename_escaped}')" 
+    style="margin-top:8px; padding:6px 12px; background-color:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer; font-size:0.85em;"
+    title="Delete this image"
+  >
+    Delete Image
+  </button>
+"""
+
     extra_html = f"""
-<div style="text-align:center; margin-top:15px;">
+<div style="text-align:center; margin-top:15px;" id="random-image-container">
   <img src="{img_src}" style="{style_attr}" title="{title_attr}">
-{caption_html}</div>
+{caption_html}{delete_button_html}</div>
+<script>
+(function() {{
+    function deleteRandomImage(filename) {{
+        if (confirm('Delete this image?')) {{
+            if (typeof pycmd !== 'undefined') {{
+                pycmd('randomImageDelete:' + filename);
+            }} else if (typeof window.pycmd !== 'undefined') {{
+                window.pycmd('randomImageDelete:' + filename);
+            }}
+        }}
+    }}
+    window.deleteRandomImage = deleteRandomImage;
+}})();
+</script>
 """
     return text + extra_html
 
@@ -428,6 +487,31 @@ def _register_config_action() -> None:
             print("[RandomImageAddon] Fallback menu failed:", e2)
 
 
+def _handle_webview_message(handled, message, context):
+    """Handle delete image command from JavaScript."""
+    if isinstance(message, str) and message.startswith("randomImageDelete:"):
+        filename = message[len("randomImageDelete:"):]
+        cfg = get_config()
+        if delete_image_file(filename, cfg):
+            # Refresh the card to show a new image
+            if hasattr(mw, "reviewer") and mw.reviewer:
+                reviewer = mw.reviewer
+                # Reload the webview to trigger card_will_show hook again
+                # This will pick a new random image
+                if hasattr(reviewer, "web") and reviewer.web:
+                    try:
+                        reviewer.web.eval("location.reload();")
+                    except Exception:
+                        # Fallback: try to show question side if card exists
+                        if hasattr(reviewer, "card") and reviewer.card:
+                            try:
+                                reviewer._showQuestion()
+                            except AttributeError:
+                                pass
+        return (True, None)
+    return handled
+
+
 def _on_main_window_init():
     _register_config_action()
 
@@ -437,3 +521,6 @@ gui_hooks.main_window_did_init.append(_on_main_window_init)
 
 # Hook card display
 gui_hooks.card_will_show.append(inject_random_image)
+
+# Hook webview messages for delete functionality
+gui_hooks.webview_did_receive_js_message.append(_handle_webview_message)
