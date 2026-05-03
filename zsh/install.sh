@@ -1,23 +1,29 @@
 #!/bin/bash
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+source "$(dirname "$0")/../distro.sh"
+source "$(dirname "$0")/../helpers.sh"
 
 echo_info "Installing ZSH with OH-MY-ZSH..."
 
-echo_info "Installing oh-my-zsh..."
-yes | sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# Install oh-my-zsh non-interactively if not already installed
+if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
+  echo_info "Installing oh-my-zsh..."
+  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
 
-echo_info "Installing A lightweight and simple plugin manager for ZSH"
-yes | git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+# Install zgen if not already installed
+if [[ ! -d "${HOME}/.zgen" ]]; then
+  echo_info "Installing zgen plugin manager..."
+  git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+fi
 
-echo_info "Symlink .zshrc..."
-yes | ln -sf "$HOME/dotfiles/zsh/zshrc" "$HOME/.zshrc"
+echo_info "Symlinking .zshrc..."
+ln -sf "${HOME}/dotfiles/zsh/zshrc" "${HOME}/.zshrc"
 
-echo_info "changing shell..."
-# chsh -s "$(command -v zsh)"
-yes | sudo chsh -s $(which zsh) $(whoami)
+# Change default shell to zsh if needed
+if [[ "$SHELL" != "$(which zsh)" ]]; then
+  echo_info "Changing default shell to zsh..."
+  sudo chsh -s "$(which zsh)" "$(whoami)"
+fi
 
 echo_done "ZSH configuration!"

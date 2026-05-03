@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+source "$(dirname "$0")/../helpers.sh"
 
-echo_info "Configuring Fasd..."
-echo_info "Installing fasd..."
-yes | brew install fasd
-
-echo_done "Fasd configuration!"
+# fasd was removed from Homebrew. zoxide is the modern replacement and is
+# already installed via Brewfile. This module is kept as a no-op placeholder.
+echo_warning "fasd is no longer available in Homebrew — using zoxide instead (already installed)."
+echo_info "Use 'z dirname' to jump to any frequent directory."
+echo_done "fasd module skipped."

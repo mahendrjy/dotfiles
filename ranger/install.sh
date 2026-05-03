@@ -1,24 +1,27 @@
 #!/bin/bash
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+source "$(dirname "$0")/../helpers.sh"
 
-echo_info "Installing Ranger..."
-yes | brew install ranger
+RANGER_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+echo_info "Installing Ranger and Neovim..."
+brew install ranger
+brew install neovim
 
 echo_info "Configuring Ranger..."
-# Create config directory if it doesn't exist
 mkdir -p "${HOME}/.config/ranger"
 
-echo_info "Symlink rc.conf..."
-yes | ln -sf "${HOME}/dotfiles/ranger/rc.conf" "${HOME}/.config/ranger/rc.conf"
+echo_info "Symlinking config files..."
+ln -sf "$RANGER_DIR/rc.conf"      "${HOME}/.config/ranger/rc.conf"
+ln -sf "$RANGER_DIR/scope.sh"     "${HOME}/.config/ranger/scope.sh"
+ln -sf "$RANGER_DIR/commands.py"  "${HOME}/.config/ranger/commands.py"
+ln -sf "$RANGER_DIR/rifle.conf"   "${HOME}/.config/ranger/rifle.conf"
+ln -sf "$RANGER_DIR/cheatsheet.md" "${HOME}/.config/ranger/cheatsheet.md"
 
-echo_info "Symlink scope.sh..."
-yes | ln -sf "${HOME}/dotfiles/ranger/scope.sh" "${HOME}/.config/ranger/scope.sh"
+# scope.sh must be executable
+chmod +x "${HOME}/.config/ranger/scope.sh"
 
-echo_info "Symlink commands.py..."
-yes | ln -sf "${HOME}/dotfiles/ranger/commands.py" "${HOME}/.config/ranger/commands.py"
+echo_info "Installing bat (for file previews)..."
+brew install bat
 
-echo_done "Ranger configuration!"
+echo_done "Ranger configured! Run 'ranger' and press '?h' to see the shortcut cheatsheet."

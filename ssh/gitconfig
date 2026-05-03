@@ -1,5 +1,27 @@
 [user]
-    name = Mahendra Choudhary
-	email = mahendrjy@gamil.com
-[includeIf "gitdir:~/work/"]
-    path = ~/work/.gitconfig
+	name = Mahendra Choudhary
+	email = pikaatic@gmail.com
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+[rebase]
+	autoStash = true
+[fetch]
+	prune = true
+[core]
+	pager = delta
+	excludesfile = /Users/mahi/.gitignore_global
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = false
+	line-numbers = true
+[alias]
+	lg = log --oneline --decorate --graph --all
+	st = status -sb
+	undo = reset HEAD~1 --mixed
+	aliases = config --get-regexp alias

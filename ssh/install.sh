@@ -1,38 +1,53 @@
 #!/bin/bash
 
-personal_email="mahendrjy@gmail.com"
-work_email="mahendrjy@gmail.com"
+email="pikaatic@gmail.com"
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+source "$(dirname "$0")/../distro.sh"
+source "$(dirname "$0")/../helpers.sh"
+
+SSH_DIR="$(dirname "$0")"
 
 echo_info "Configuring SSH..."
-mkdir -p ${HOME}/.ssh
-mkdir -p ${HOME}/work
-cd ${HOME}/.ssh
+mkdir -p "${HOME}/.ssh"
+chmod 700 "${HOME}/.ssh"
 
-# How to Setup SSH Keys on GitHub
-# https://devconnected.com/how-to-setup-ssh-keys-on-github/
-echo_info "Generating an RSA token for GitHub"
-echo_info "Personal - id_rsa_personal"
-echo_info "Work - id_rsa_work"
-ssh-keygen -t rsa -b 4096 -C ${personal_email} -f id_rsa_personal
-ssh-keygen -t rsa -b 4096 -C ${work_email} -f id_rsa_work
+# Generate key only if it doesn't already exist
+if [[ ! -f "${HOME}/.ssh/id_github" ]]; then
+  echo_info "Generating SSH key..."
+  ssh-keygen -t ed25519 -C "$email" -f "${HOME}/.ssh/id_github" -N ""
+fi
 
-echo_info "Symlink config..."
-ln -sf "$HOME/dotfiles/ssh/config" "$HOME/.ssh/config"
-ln -sf "$HOME/dotfiles/ssh/gitconfig" "$HOME/.gitconfig"
-ln -sf "$HOME/dotfiles/ssh/work-gitconfig" "$HOME/work/.gitconfig"
+# Add to keychain so you never need to enter a passphrase
+eval "$(ssh-agent -s)" &>/dev/null
+ssh-add --apple-use-keychain "${HOME}/.ssh/id_github" 2>/dev/null \
+  || ssh-add "${HOME}/.ssh/id_github"
 
-echo_info "Add SSH key to your GitHub Account"
-echo_info "Copy id_rsa_personal.pub and id_rsa_work.pub and add to respective github account."
-echo_info "ssh -T github.com-pika"
-echo_info "ssh -T github.com-work"
-echo_info "Always clone repo by adding hostname in remote url"
-echo_info "e.g. git@github.com to git@github.com-pika"
+echo_info "Symlinking SSH config and gitconfig..."
+ln -sf "$SSH_DIR/config"    "${HOME}/.ssh/config"
+ln -sf "$SSH_DIR/gitconfig" "${HOME}/.gitconfig"
 
-echo_done "SSH configuration!"
+chmod 600 "${HOME}/.ssh/config"
 
-cd ${HOME}/dotfiles/ssh
+echo_done "SSH configured!"
+
+# ─────────────────────────────────────────────────────────────────────────────
+printf '\n'
+printf '╔══════════════════════════════════════════════════════════╗\n'
+printf '║        FINAL STEP: Add your SSH key to GitHub           ║\n'
+printf '╚══════════════════════════════════════════════════════════╝\n'
+printf '\n'
+printf 'Your public key (copy everything below):\n\n'
+printf '  \033[33m%s\033[0m\n' "$(cat "${HOME}/.ssh/id_github.pub")"
+printf '\n'
+printf 'Steps:\n'
+printf '  1. Go to \033[36mhttps://github.com/settings/ssh/new\033[0m\n'
+printf '  2. Title: MacBook\n'
+printf '  3. Paste the key above → click "Add SSH key"\n'
+printf '\n'
+printf 'Test it works:\n'
+printf '  \033[36mssh -T git@github.com\033[0m\n'
+printf '  (should say: Hi mahendrjy! You have successfully authenticated)\n'
+printf '\n'
+printf 'Then clone repos normally:\n'
+printf '  \033[36mgit clone git@github.com:yourusername/repo.git\033[0m\n'
+printf '\n'

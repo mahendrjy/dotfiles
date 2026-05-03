@@ -6,81 +6,148 @@
 #   (_)___|___/_| |_|_|  \___|
 
 export DOTFILES="$HOME/dotfiles"
+export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.cargo/bin:$PATH"
 
+# Homebrew (must come early so PATH is set for everything below)
+if [[ -f /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -f /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# ── Plugins (zgen) ────────────────────────────────────────────────────────────
 source $DOTFILES/zsh/plugins.zsh
 source $DOTFILES/zsh/aliases.zsh
 source $DOTFILES/zsh/functions.zsh
 
-# Vim for life
-export EDITOR=vim
-
+export EDITOR=nvim
+export VISUAL=nvim
 ENABLE_CORRECTION="true"
 export LANG=en_US.UTF-8
+SAVEHIST=1000000    # 1M lines — let atuin handle trimming
 
-# history
-SAVEHIST=100000
-
-# Basic auto/tab complete:
+# ── Completion (cached — only rebuilds once a day) ────────────────────────────
 autoload -U compinit
 zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case-insensitive
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zmodload zsh/complist
-compinit
-_comp_options+=(globdots) # Include hidden files.
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+_comp_options+=(globdots)
 
-# vi mode
+# ── zsh-autosuggestions ───────────────────────────────────────────────────────
+# Grey suggestion appears after cursor as you type.
+# → (right arrow)   accept full suggestion
+# Ctrl+F            accept full suggestion
+# Ctrl+→            accept one word of suggestion
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#585b70'
+ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+# ── Vi mode ───────────────────────────────────────────────────────────────────
 bindkey -v
 export KEYTIMEOUT=1
 
-# Edit line in vim with ctrl-e:
-autoload edit-command-line
+# Edit command in nvim with Ctrl+E
+autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '^e' edit-command-line
 
-# Use vim keys in tab complete menu:
+# Vim keys in tab-complete menu
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+# ── Key bindings ─────────────────────────────────────────────────────────────
+bindkey '^f' autosuggest-accept          # Ctrl+F  → accept autosuggestion
+bindkey '^[[1;5C' forward-word           # Ctrl+→  → accept one word
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
 
-# Overcoming Muscle Memory
-if type nvim >/dev/null 2>&1; then
-  alias vim='nvim'
-fi
-
-autoload -U edit-command-line
-zle -N edit-command-line
-
-bindkey '^E' edit-command-line                   # Opens Vim to edit current command line
-bindkey '^R' history-incremental-search-backward # Perform backward search in command line history
-bindkey '^S' history-incremental-search-forward  # Perform forward search in command line history
-bindkey '^P' history-search-backward             # Go back/search in history (autocomplete)
-bindkey '^N' history-search-forward              # Go forward/search in history (autocomplete)
-
-# enable control-s and control-q
+# enable Ctrl+S forward search
 stty start undef
 stty stop undef
 setopt noflowcontrol
 
-#export PATH="$HOME/.rbenv/bin:$PATH"
-#eval "$(rbenv init -)"
+# ── atuin — beautiful shell history ──────────────────────────────────────────
+# Ctrl+R opens a filterable TUI showing every command with:
+#   timestamp, exit code, working directory, duration
+# Type to fuzzy-search. Enter to run. Esc to cancel.
+if command -v atuin &>/dev/null; then
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi
 
+# ── thefuck — auto-corrects failed commands ───────────────────────────────────
+# Type a wrong command → it fails → type 'fk' → it fixes and re-runs it
+if command -v thefuck &>/dev/null; then
+  eval "$(thefuck --alias fk)"
+fi
+
+# ── navi — interactive command cheatsheets ────────────────────────────────────
+# Press Ctrl+G anywhere while typing to get a searchable cheatsheet popup.
+# Shows command syntax, examples, and lets you fill in arguments with Tab.
+if command -v navi &>/dev/null; then
+  eval "$(navi widget zsh)"
+fi
+
+# ── fzf — fuzzy finder wired to shell ────────────────────────────────────────
+# Ctrl+T  → fuzzy-insert a file path into the current command
+# Alt+C   → fuzzy cd into a directory
+# Ctrl+R  → (overridden by atuin above, but fzf fallback kept)
+if command -v fzf &>/dev/null; then
+  eval "$(fzf --zsh)" 2>/dev/null || { [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh; }
+fi
+export FZF_DEFAULT_OPTS="
+  --height=50%
+  --border=rounded
+  --layout=reverse
+  --prompt='  '
+  --pointer='▶'
+  --marker='✓'
+  --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8
+  --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc
+  --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8
+  --bind='ctrl-/:toggle-preview'
+"
+# Use fd for fzf file search (respects .gitignore, faster than find)
+if command -v fd &>/dev/null; then
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+fi
+
+# ── zoxide — smarter cd ───────────────────────────────────────────────────────
+# Type 'z dirname' to jump to any frequently visited directory.
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
+
+# ── Lazy NVM — avoids ~500ms startup penalty ─────────────────────────────────
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+nvm() {
+  unfunction nvm node npm npx
+  local nvm_sh="/opt/homebrew/opt/nvm/nvm.sh"
+  [[ -s "$nvm_sh" ]] || nvm_sh="$NVM_DIR/nvm.sh"
+  [[ -s "$nvm_sh" ]] && source "$nvm_sh"
+  [[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ]] && \
+    source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+  nvm "$@"
+}
+node() { unfunction node; nvm use default --silent; node "$@"; }
+npm()  { unfunction npm;  nvm use default --silent; npm  "$@"; }
+npx()  { unfunction npx;  nvm use default --silent; npx  "$@"; }
 
-export PATH="$(yarn global bin):$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+# ── tmux-sessionizer shortcut ─────────────────────────────────────────────────
+# Ctrl+F  → fuzzy-jump to any project in its own tmux session (like i3 workspaces)
+bindkey -s '^f' 'tmux-sessionizer\n'
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# ── System info on new session ────────────────────────────────────────────────
+# Shows CPU, RAM, OS, uptime etc. Comment out if you find it slow.
+if command -v fastfetch &>/dev/null; then
+  fastfetch --logo-type small 2>/dev/null
+fi

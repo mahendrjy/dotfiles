@@ -1,20 +1,23 @@
 #!/bin/bash
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+source "$(dirname "$0")/../distro.sh"
+source "$(dirname "$0")/../helpers.sh"
 
 echo_info "Configuring fonts..."
-echo_info "Installing fonts..."
-mkdir -p ${HOME}/Library/Fonts
+mkdir -p "${HOME}/Library/Fonts"
 
-echo_info "Installing Operator Mono font..."
-cp -a Operator\ Mono/. ${HOME}/Library/Fonts
-cp -a Operator\ Mono\ Lig/. ${HOME}/Library/Fonts
-cp -a Dank\ Mono/. ${HOME}/Library/Fonts
+FONTS_DIR="$(dirname "$0")"
 
-# Install emoji fonts via Homebrew
-brew install --cask font-erica-one
+# Copy local font packs if they exist in the repo
+for font_dir in "Operator Mono" "Operator Mono Lig" "Dank Mono"; do
+  if [[ -d "$FONTS_DIR/$font_dir" ]]; then
+    echo_info "Installing $font_dir..."
+    cp -a "$FONTS_DIR/$font_dir/." "${HOME}/Library/Fonts"
+  fi
+done
 
-echo_done "fonts configuration!"
+# Install Nerd Fonts via Homebrew cask
+echo_info "Installing Nerd Fonts (JetBrains Mono)..."
+brew install --cask font-jetbrains-mono-nerd-font || echo_warning "font-jetbrains-mono-nerd-font install failed, skipping..."
+
+echo_done "Fonts configuration!"

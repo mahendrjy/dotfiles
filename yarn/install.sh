@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# shellcheck source=distro.sh
-. ../distro.sh
-# shellcheck source=helpers.sh
-. ../helpers.sh
+source "$(dirname "$0")/../distro.sh"
+source "$(dirname "$0")/../helpers.sh"
 
 echo_info "Installing yarn..."
-yes | brew install yarn
+brew install yarn
 
-echo_done "yarn configuration!"
+echo_done "Yarn configuration!"
