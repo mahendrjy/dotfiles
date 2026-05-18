@@ -151,3 +151,11 @@ bindkey -s '^f' 'tmux-sessionizer\n'
 if command -v fastfetch &>/dev/null; then
   fastfetch --logo-type small 2>/dev/null
 fi
+
+# opencode
+export PATH=/Users/mahi/.opencode/bin:$PATH
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/mahi/.lmstudio/bin"
+# End of LM Studio CLI section
+

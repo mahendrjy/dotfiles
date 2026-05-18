@@ -1,0 +1,448 @@
+#!/bin/bash
+# Anki terminal tool — review, browse, add, edit, tags, images, limit
+# Usage: anki-review [--browse|--add|--decks|--edit <query>|--limit N] [search]
+
+ANKI_HOST="http://localhost:8765"
+CONFIG_FILE="${HOME}/.config/anki-review/config"
+MAX_CARDS=999999
+
+R=$'\033[0m'
+DIM=$'\033[2m'
+Y=$'\033[33m'
+G=$'\033[32m'
+C=$'\033[36m'
+BL=$'\033[34m'
+RD=$'\033[31m'
+WH=$'\033[37m'
+MG=$'\033[35m'
+
+load_config() {
+  DEFAULT_DECK=""
+  SHOW_EASE=false; SHOW_LAPSES=false; SHOW_REVIEWS=false
+  SHOW_PROGRESS=false; SHOW_SEPARATORS=false; SHOW_RATING_HINT=false
+  if [ -f "$CONFIG_FILE" ]; then
+    while IFS='=' read -r key val; do
+      key="${key#"${key%%[![:space:]]*}"}"; key="${key%"${key##*[![:space:]]}"}"
+      val="${val#"${val%%[![:space:]]*}"}"; val="${val%"${val##*[![:space:]]}"}"
+      [ -z "$key" ] || [ "${key::1}" = "#" ] && continue
+      case "$key" in
+        default_deck)     DEFAULT_DECK="$val" ;;
+        show_ease)        SHOW_EASE="$val" ;;
+        show_lapses)      SHOW_LAPSES="$val" ;;
+        show_reviews)     SHOW_REVIEWS="$val" ;;
+        show_progress)    SHOW_PROGRESS="$val" ;;
+        show_separators)  SHOW_SEPARATORS="$val" ;;
+        show_rating_hint) SHOW_RATING_HINT="$val" ;;
+        max_cards)        MAX_CARDS="$val" ;;
+      esac
+    done < "$CONFIG_FILE"
+  fi
+}
+
+load_config
+
+ankiconnect() {
+  local action="$1"; shift
+  local params="$([ "$#" -gt 0 ] && jq -n "$@" 2>/dev/null || echo "{}")"
+  local payload
+  if [ "$params" = "{}" ]; then
+    payload=$(jq -n --arg a "$action" '{action:$a,version:6}')
+  else
+    payload=$(jq -n --arg a "$action" --argjson p "$params" '{action:$a,version:6,params:$p}')
+  fi
+  curl -s "$ANKI_HOST" -H "Content-Type: application/json" -d "$payload"
+}
+
+do_sync() {
+  echo -n "  ${C}syncing${R} ... "
+  ankiconnect "sync" > /dev/null
+  echo "${G}done${R}"
+}
+
+strip_html() {
+  perl -0777 -pe '
+    s/<style[^>]*>.*?<\/style>//gs;
+    s/<br[^>]*>/\n/g;
+    s/<\/?p[^>]*>/\n/g;
+    s/<\/?div[^>]*>/\n/g;
+    s/<\/h[1-6]>/\n/g;
+    s/<\/tr>/\n/g;
+    s/<\/[uo]l>/\n/g;
+    s/<li[^>]*>/\n- /g;
+    s/<\/li>/\n/g;
+    s/<[^>]*>//g;
+    s/&amp;/\&/g;
+    s/&lt;/\</g;
+    s/&gt;/\>/g;
+    s/&quot;/\"/g;
+    s/&nbsp;/ /g;
+    s/&#(\d+);/chr($1)/ge;
+    s/&#x([0-9a-f]+);/chr(hex($1))/gei;
+    s/^\n+//; s/\n+$//; s/\n{3,}/\n\n/g'
+}
+
+decode_entities() {
+  perl -0777 -pe 's/&amp;/\&/g; s/&lt;/\</g; s/&gt;/\>/g; s/&quot;/\"/g; s/&nbsp;/ /g; s/&#(\d+);/chr($1)/ge; s/&#x([0-9a-f]+);/chr(hex($1))/gei'
+}
+
+extract_answer() {
+  perl -0777 -pe '
+    s/<style[^>]*>.*?<\/style>//gs;
+    s/.*?<hr[^>]*>//s;
+    s/<br[^>]*>/\n/g;
+    s/<\/?p[^>]*>/\n/g;
+    s/<\/?div[^>]*>/\n/g;
+    s/<\/h[1-6]>/\n/g;
+    s/<\/tr>/\n/g;
+    s/<\/[uo]l>/\n/g;
+    s/<li[^>]*>/\n- /g;
+    s/<\/li>/\n/g;
+    s/<[^>]*>//g;
+    s/^\n+//; s/\n+$//; s/^ +//mg' | decode_entities
+}
+
+extract_images() {
+  perl -0777 -ne 'while (/<img[^>]+src=["'\'']([^"'\'']+)["'\'']/g) { print "$1\n" }'
+}
+
+get_stats() {
+  ankiconnect "getDeckStats" --arg d "$1" '{decks:[$d]}' | jq '.result | to_entries | .[0].value'
+}
+
+sep() {
+  echo "${DIM}────────────────────────────────────────────────${R}"
+}
+
+display_image() {
+  local fname="$1"
+  local data
+  data=$(ankiconnect "retrieveMediaFile" --arg f "$fname" '{filename:$f}' | jq -r '.result // empty')
+  [ -z "$data" ] && return
+  local tmp
+  tmp=$(mktemp /tmp/anki-img-XXXXXX)
+  echo "$data" | base64 -d > "$tmp" 2>/dev/null
+  if command -v chafa &>/dev/null; then
+    chafa --symbols solid --size 40 "$tmp" 2>/dev/null || chafa "$tmp" 2>/dev/null
+  elif command -v imgcat &>/dev/null; then
+    imgcat "$tmp" 2>/dev/null
+  elif [ -n "$KITTY_WINDOW_ID" ]; then
+    kitten icat --silent --place 40x10@0x0 "$tmp" 2>/dev/null
+  else
+    local size
+    size=$(stat -f%z "$tmp" 2>/dev/null || stat -c%s "$tmp" 2>/dev/null)
+    echo "  ${DIM}[image: ${fname}  ${size} bytes]${R}"
+  fi
+  rm -f "$tmp"
+}
+
+handle_images() {
+  local html="$1"
+  local imgs
+  imgs=$(echo "$html" | extract_images)
+  [ -z "$imgs" ] && return
+  while IFS= read -r img; do
+    [ -n "$img" ] && display_image "$img"
+  done <<< "$imgs"
+}
+
+tag_management() {
+  local nid="$1"
+  local note_info tags
+  note_info=$(ankiconnect "notesInfo" --argjson n "[$nid]" '{notes:$n}')
+  tags=$(echo "$note_info" | jq -r '.result[0].tags | join(" ")')
+  echo ""
+  sep
+  echo "  ${MG}tags${R}  ${DIM}${tags:-none}${R}"
+  sep
+  echo "  ${WH}a${R}=add tag  ${WH}r${R}=remove tag  ${WH}[Enter]${R}=back"
+  sep
+  printf "  ${BL}>${R} "
+  read -n1 tag_action
+  echo ""
+  if [ "$tag_action" = "a" ]; then
+    printf "  tag name: "
+    read tag_name
+    [ -n "$tag_name" ] && ankiconnect "addTags" --argjson n "[$nid]" --arg t "$tag_name" '{notes:$n, tags:$t}' > /dev/null && echo "  ${G}added${R} ${tag_name}"
+  elif [ "$tag_action" = "r" ]; then
+    printf "  tag name: "
+    read tag_name
+    [ -n "$tag_name" ] && ankiconnect "removeTags" --argjson n "[$nid]" --arg t "$tag_name" '{notes:$n, tags:$t}' > /dev/null && echo "  ${G}removed${R} ${tag_name}"
+  fi
+}
+
+review_cards() {
+  local cids="$1" label="$2" limit="${3:-$MAX_CARDS}"
+  local total=0 again=0 hard=0 good_e=0 easy=0
+  local start=$SECONDS
+  local count cid
+  count=$(echo "$cids" | wc -l | tr -d ' ')
+  [ "$count" -gt "$limit" ] && count="$limit"
+
+  [ -n "$label" ] && echo "$label"
+
+  for cid in $cids; do
+    [ -z "$cid" ] && continue
+    [ "$total" -ge "$limit" ] && echo "  ${DIM}limit reached${R}" && break
+    total=$((total + 1))
+
+    info=$(ankiconnect "cardsInfo" --argjson c "[$cid]" '{cards:$c}')
+    question=$(echo "$info" | jq -r '.result[0].question')
+    answer_html=$(echo "$info" | jq -r '.result[0].answer')
+    answer=$(echo "$answer_html" | extract_answer)
+    intv=$(echo "$info" | jq -r '.result[0].interval // 0')
+    ctype=$(echo "$info" | jq -r '.result[0].type // ""')
+    nid=$(echo "$info" | jq -r '.result[0].note // 0')
+    model=$(echo "$info" | jq -r '.result[0].modelName // ""')
+
+    local type_label="review"
+    [ "$ctype" = "0" ] && type_label="${G}new${R}"
+    [ "$ctype" = "1" ] && type_label="${Y}learn${R}"
+    [[ "$model" == *"Occlusion"* || "$model" == *"occlusion"* ]] && type_label="${MG}IO${R}"
+
+    local qtext=$(echo "$question" | strip_html)
+    local has_images=$(echo "$question" | grep -c '<img' 2>/dev/null)
+
+    local age_info=""
+    if [ "$SHOW_EASE" = "true" ] || [ "$SHOW_LAPSES" = "true" ] || [ "$SHOW_REVIEWS" = "true" ]; then
+      local ease=$(echo "$info" | jq -r '.result[0].factor // 0')
+      local lapses=$(echo "$info" | jq -r '.result[0].lapses // 0')
+      local revs=$(echo "$info" | jq -r '.result[0].reviews // 0')
+      local parts=""
+      [ "$SHOW_EASE" = "true" ] && [ "$ease" -gt 0 ] && parts="${parts}  ${DIM}ease:${R} $((ease/10))%"
+      [ "$SHOW_LAPSES" = "true" ] && [ "$lapses" -gt 0 ] && parts="${parts}  ${DIM}lapses:${R} ${lapses}"
+      [ "$SHOW_REVIEWS" = "true" ] && parts="${parts}  ${DIM}reviews:${R} ${revs}"
+      age_info="$parts"
+    fi
+
+    echo ""
+    if [ "$SHOW_PROGRESS" = "true" ]; then
+      [ "$SHOW_SEPARATORS" = "true" ] && sep
+      echo -n "  ${DIM}${total}/${count}${R}  [${type_label}]  ${DIM}${intv}d${R}"
+      echo "$age_info"
+      [ "$SHOW_SEPARATORS" = "true" ] && sep
+    fi
+
+    if [ "$has_images" -gt 0 ]; then
+      [[ "$model" == *"Occlusion"* || "$model" == *"occlusion"* ]] && echo "  ${DIM}[image occlusion — recall what is hidden]${R}"
+      handle_images "$question"
+      echo ""
+    fi
+
+    echo "  ${Y}${qtext}${R}"
+    echo ""
+    printf "  "
+    input=""
+    local old_stty=$(stty -g 2>/dev/null)
+    stty raw -echo min 1 time 0 2>/dev/null
+    while true; do
+      ch=$(dd bs=1 count=1 2>/dev/null)
+      case "$ch" in
+        $'\r')
+          printf '\r\n'
+          break ;;
+        $'\n')
+          input="${input}"$'\n'
+          printf '\r\n  ' ;;
+        $'\e')
+          stty raw -echo min 0 time 1 2>/dev/null
+          next=$(dd bs=1 count=1 2>/dev/null)
+          stty raw -echo min 1 time 0 2>/dev/null
+          if [ "$next" = $'\r' ]; then
+            input="${input}"$'\n'
+            printf '\r\n  '
+          fi
+          ;;
+        $'\x7f'|$'\b')
+          [ -n "$input" ] && input="${input%?}" && printf '\b \b' ;;
+        "")
+          break ;;
+        *)
+          input="${input}${ch}"
+          printf '%s' "$ch" ;;
+      esac
+    done
+    stty min 0 time 1 2>/dev/null
+    dd bs=1 count=999 2>/dev/null
+    stty "$old_stty" 2>/dev/null
+
+    local trimmed="${input#"${input%%[![:space:]]*}"}"
+    trimmed="${trimmed%"${trimmed##*[![:space:]]}"}"
+    [ "$trimmed" = "q" ] && [ "${#trimmed}" -eq 1 ] && total=$((total - 1)) && break
+
+    echo ""
+    echo "  ${G}${answer}${R}" | sed '2,$s/^/  /'
+    local aimgs=$(echo "$answer_html" | extract_images | grep -vF "$(echo "$question" | extract_images)" | sort -u)
+    if [ -n "$aimgs" ]; then
+      echo ""
+      while IFS= read -r img; do
+        [ -n "$img" ] && display_image "$img"
+      done <<< "$aimgs"
+    fi
+
+    echo ""
+    if [ "$SHOW_RATING_HINT" = "true" ]; then
+      [ "$SHOW_SEPARATORS" = "true" ] && sep
+      echo "  ${WH}1${R}=Again  ${WH}2${R}=Hard  ${WH}3${R}=Good  ${WH}4${R}=Easy  ${DIM}|${R}  ${WH}s${R}=undo  ${WH}t${R}=tags  ${WH}e${R}=edit  ${WH}l${R}=limit  ${WH}q${R}=quit"
+      [ "$SHOW_SEPARATORS" = "true" ] && sep
+    fi
+    printf "  ${WH}>${R} "
+    read -n1 ease
+    echo ""
+
+    [ -z "$ease" ] && ease=3
+    [ "$ease" = "q" ] && total=$((total - 1)) && break
+    [ "$ease" = "s" ] && { ankiconnect "guiUndo" > /dev/null; total=$((total - 1)); echo "  ${Y}undone${R}"; continue; }
+    [ "$ease" = "t" ] && { tag_management "$nid"; continue; }
+    [ "$ease" = "e" ] && { ankiconnect "guiBrowse" --argjson n "$nid" '{query:("nid:" + ($n|tostring))}' > /dev/null; echo "  ${G}editor opened${R}"; continue; }
+    [ "$ease" = "l" ] && { printf "  max cards: "; read limit_local; [[ "$limit_local" =~ ^[0-9]+$ ]] && limit="$limit_local" && echo "  ${G}limit set${R} ${limit}"; continue; }
+
+    if [[ "$ease" =~ ^[1-4]$ ]]; then
+      result=$(ankiconnect "answerCards" --argjson answers "[{\"cardId\":$cid,\"ease\":$ease}]" '{answers:$answers}')
+      err=$(echo "$result" | jq -r '.error // empty')
+      if [ -n "$err" ]; then
+        echo "  ${RD}error${R}: ${err}"
+        total=$((total - 1)); continue
+      fi
+      [ "$ease" = "1" ] && again=$((again + 1))
+      [ "$ease" = "2" ] && hard=$((hard + 1))
+      [ "$ease" = "3" ] && good_e=$((good_e + 1))
+      [ "$ease" = "4" ] && easy=$((easy + 1))
+      local rating_label=""
+      [ "$ease" = "1" ] && rating_label="${RD}Again${R}"
+      [ "$ease" = "2" ] && rating_label="${Y}Hard${R}"
+      [ "$ease" = "3" ] && rating_label="${G}Good${R}"
+      [ "$ease" = "4" ] && rating_label="${BL}Easy${R}"
+      echo ""
+      echo "  ${rating_label}"
+    fi
+  done
+
+  local elapsed=$((SECONDS - start))
+  local remembered=$((good_e + easy))
+  local pct=0
+  [ "$total" -gt 0 ] && pct=$((remembered * 100 / total))
+
+  echo ""
+  [ "$SHOW_SEPARATORS" = "true" ] && sep
+  echo "  ${C}done${R}  ${DIM}${total} cards  $((elapsed/60))m$((elapsed%60))s  ${pct}% remembered${R}"
+  echo "  ${DIM}Again:${R} ${again}  ${DIM}Hard:${R} ${hard}  ${DIM}Good:${R} ${good_e}  ${DIM}Easy:${R} ${easy}"
+  [ "$SHOW_SEPARATORS" = "true" ] && sep
+}
+
+get_daily_stats() {
+  local today; today=$(date +%Y-%m-%d)
+  local val
+  val=$(ankiconnect "getNumCardsReviewedByDay" | jq -r --arg t "$today" '.result[] | select(.[0] == $t) | .[1] // empty')
+  echo "${val:-0}"
+}
+
+build_menu() {
+  decks=(); new_counts=(); due_counts=()
+  while read line; do
+    IFS='|' read -r name newc duec <<< "$line"
+    [ "$((newc + duec))" -gt 0 ] || continue
+    decks+=("$name"); new_counts+=("$newc"); due_counts+=("$duec")
+  done < <(ankiconnect "deckNames" | jq -r '.result[]' | while read d; do
+    stats=$(get_stats "$d")
+    newc=$(echo "$stats" | jq '.new_count')
+    duec=$(echo "$stats" | jq '.review_count')
+    echo "$d|$newc|$duec"
+  done | sort -t'|' -k2,2rn -k3,3rn)
+}
+
+print_menu() {
+  local daily=$(get_daily_stats)
+  echo ""
+  echo "${C}── Anki Review ──────────────────${R}"
+  [ "$daily" -gt 0 ] && echo "  ${DIM}today: ${daily} cards${R}"
+  [ "$LIMIT" -lt "$MAX_CARDS" ] && echo "  ${DIM}limit: ${LIMIT} cards${R}"
+  echo ""
+  [ ${#decks[@]} -eq 0 ] && echo "  ${DIM}(no cards ready)${R}" && return
+  for i in "${!decks[@]}"; do
+    local n="${new_counts[$i]}" d="${due_counts[$i]}"
+    local label=""
+    [ "$n" -gt 0 ] && label="${G}N${n}${R}"
+    [ "$d" -gt 0 ] && label="${label} ${C}R${d}${R}"
+    printf "  ${BL}%d${R}  %-50s  %s\n" $((i+1)) "${decks[$i]}" "$label"
+  done
+  echo "  ${DIM}(Enter to submit, Option+Enter for new line in answer)${R}"
+  echo ""
+  echo "  ${DIM}--browse  --add  --decks  --edit <query>  <search>  --limit N${R}"
+  echo "  0  quit"
+  echo ""
+}
+
+do_browse() { ankiconnect "guiBrowse" > /dev/null; }
+do_add() { ankiconnect "guiAddCards" > /dev/null; }
+do_decks() { ankiconnect "guiDeckBrowser" > /dev/null; }
+do_edit() { local q="$1"; ankiconnect "guiBrowse" --arg q "$q" '{query:$q}' > /dev/null; }
+
+# ── Main ────────────────────────────────────────────────
+LIMIT=$MAX_CARDS
+ARGS=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --limit|-l) shift; LIMIT="${1:-$MAX_CARDS}"; shift ;;
+    --browse|-b) do_browse; exit 0 ;;
+    --add|-a) do_add; exit 0 ;;
+    --decks|-d) do_decks; exit 0 ;;
+    --edit|-e) shift; do_edit "$1"; exit 0 ;;
+    *) ARGS+=("$1"); shift ;;
+  esac
+done
+
+set -- "${ARGS[@]}"
+
+# Search mode
+if [ -n "$1" ]; then
+  case "$1" in
+    deck:*|tag:*|is:*|prop:*|flag:*|rated:*|added:*|nid:*|cid:*)
+      do_sync
+      cids=$(ankiconnect "findCards" --arg q "$1" '{query:$q}' | jq -r '.result[] // empty' | head -"$LIMIT")
+      [ -z "$cids" ] && echo "${DIM}no cards match${R}" && do_sync && exit 0
+      review_cards "$cids" "" "$LIMIT"
+      do_sync
+      exit 0 ;;
+  esac
+fi
+
+do_sync
+build_menu
+[ ${#decks[@]} -eq 0 ] && echo "${DIM}no cards ready${R}" && do_sync && exit 0
+
+if [ -n "$1" ]; then
+  for i in "${!decks[@]}"; do
+    if [[ "${decks[$i]}" == *"$1"* ]]; then
+      cids=$(ankiconnect "findCards" --arg d "${decks[$i]}" '{query:("deck:\"" + $d + "\" (is:due OR is:new)")}' | jq -r '.result[]' | head -"$LIMIT")
+      review_cards "$cids" "" "$LIMIT"
+      do_sync
+      exit 0
+    fi
+  done
+  echo "${RD}no deck matching '$1'${R}"
+  do_sync; exit 0
+fi
+
+if [ -n "$DEFAULT_DECK" ]; then
+  for i in "${!decks[@]}"; do
+    if [[ "${decks[$i]}" == "$DEFAULT_DECK" ]]; then
+      cids=$(ankiconnect "findCards" --arg d "${decks[$i]}" '{query:("deck:\"" + $d + "\" (is:due OR is:new)")}' | jq -r '.result[]')
+      review_cards "$cids" "" "$LIMIT"
+      do_sync; exit 0
+    fi
+  done
+fi
+
+while true; do
+  print_menu
+  read -p " > " sel
+  [ "$sel" = "0" ] && do_sync && exit 0
+  [ -z "$sel" ] && continue
+  if [[ "$sel" =~ ^[0-9]+$ ]] && [ "$sel" -le "${#decks[@]}" ]; then
+    idx=$((sel-1))
+    cids=$(ankiconnect "findCards" --arg d "${decks[$idx]}" '{query:("deck:\"" + $d + "\" (is:due OR is:new)")}' | jq -r '.result[]' | head -"$LIMIT")
+    review_cards "$cids" "" "$LIMIT"
+    build_menu
+  fi
+done
