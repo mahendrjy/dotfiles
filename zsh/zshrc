@@ -159,3 +159,5 @@ export PATH=/Users/mahi/.opencode/bin:$PATH
 export PATH="$PATH:/Users/mahi/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+. "$HOME/.local/bin/env"
