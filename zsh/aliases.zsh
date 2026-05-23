@@ -167,3 +167,7 @@ alias ddg="ddgr --num 5"
 
 # Tmux sessionizer
 alias proj="tmux-sessionizer"     # pick a project
+
+# Anki Review Shortcuts
+alias ar="anki-review"
+alias anki="anki-review"

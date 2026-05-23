@@ -161,3 +161,7 @@ export PATH="$PATH:/Users/mahi/.lmstudio/bin"
 
 
 . "$HOME/.local/bin/env"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/mahi/.local/bin:$PATH"

@@ -16,3 +16,6 @@ else
   chmod +x "$HOME/bin/anki-review"
   echo_done "anki-review installed! Run: anki-review"
 fi
+
+# Clean up old standalone symlinks
+rm -f "$HOME/bin/anki-agent-bridge" "$HOME/bin/anki-ai-tutor"

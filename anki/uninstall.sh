@@ -11,3 +11,5 @@ if [ -L "$HOME/bin/anki-review" ]; then
 else
   echo_error "anki-review not found at ~/bin/anki-review"
 fi
+
+rm -f "$HOME/bin/anki-agent-bridge" "$HOME/bin/anki-ai-tutor"
